@@ -34,7 +34,7 @@ const router = createRouter({
 // Global Navigation Guard
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    const isAuthenticated = store.getters.isAuthenticated; // Your auth check logic
+    const isAuthenticated = store.getters.isAuthenticated; 
     if (!isAuthenticated) {
       next({
         path: "/login",

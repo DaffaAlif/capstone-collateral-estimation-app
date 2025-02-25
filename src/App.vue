@@ -1,23 +1,22 @@
-<!-- App.vue -->
 <template>
-  <div id="app">
+  <div >
     <header>
-
-      <h1>My App</h1>
+      <h1 class="text-sx">My App</h1>
     </header>
     <main>
-      <!-- This is where your routed components appear -->
       <router-view />
     </main>
     <footer>
-      <!-- Footer convtent -->
       <p>© 2025 My Company</p>
     </footer>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'App'
-}
+
 </script>
+
+<style scoped>
+
+
+</style>
