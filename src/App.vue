@@ -1,4 +1,5 @@
 <script setup>
+import LoginForm from './components/LoginForm.vue'
 
 </script>
 
@@ -14,6 +15,9 @@
     <input placeholder="edit me" />
     <input placeholder="edit me" />
     <input placeholder="edit me" />
+
+
+    <LoginForm />
 
   </div>
 </template>
