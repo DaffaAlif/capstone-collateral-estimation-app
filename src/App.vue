@@ -3,9 +3,19 @@
 </script>
 
 <template>
-  <h1>Cal</h1>
+  <h1 class="text-xl">Smart Colalteral</h1>
+  <div>
+
+    <input placeholder="edit me" />
+    <input placeholder="edit me" />
+    <input placeholder="edit me" />
+    <input placeholder="edit me" />
+    <input placeholder="edit me" />
+    <input placeholder="edit me" />
+    <input placeholder="edit me" />
+    <input placeholder="edit me" />
+
+  </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
