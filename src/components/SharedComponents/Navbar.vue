@@ -91,7 +91,7 @@ const headerClass = computed(() => [
     "col-12",
     props.sticky
         ? "dark:bg-gray-dark dark:shadow-sticky-dark fixed z-[9999] bg-white !bg-opacity-80 shadow-sticky backdrop-blur-sm transition"
-        : "bg-transparent border",
+        : "bg-transparent border-b-2",
 ]);
 
 // Methods
