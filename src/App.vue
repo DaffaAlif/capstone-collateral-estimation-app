@@ -1,21 +1,23 @@
-<script setup>
-
-</script>
-
+<!-- App.vue -->
 <template>
-  <h1 class="text-xl">Smart Colalteral</h1>
-  <div>
+  <div id="app">
+    <header>
 
-    <input placeholder="edit me" />
-    <input placeholder="edit me" />
-    <input placeholder="edit me" />
-    <input placeholder="edit me" />
-    <input placeholder="edit me" />
-    <input placeholder="edit me" />
-    <input placeholder="edit me" />
-    <input placeholder="edit me" />
-
+      <h1>My App</h1>
+    </header>
+    <main>
+      <!-- This is where your routed components appear -->
+      <router-view />
+    </main>
+    <footer>
+      <!-- Footer convtent -->
+      <p>© 2025 My Company</p>
+    </footer>
   </div>
 </template>
 
-<style scoped></style>
+<script>
+export default {
+  name: 'App'
+}
+</script>
