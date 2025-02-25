@@ -1,9 +1,10 @@
+import axios from 'axios'
 import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    user: null,
-    token: null
+    user: JSON.parse(localStorage.getItem('user')) || null,
+    token: localStorage.getItem('token') || null
   },
   getters: {
     isAuthenticated(state) {
@@ -16,10 +17,13 @@ export default createStore({
   mutations: {
     SET_USER(state, user) {
       state.user = user
+      localStorage.setItem('user', JSON.stringify(user))
     },
     SET_TOKEN(state, token) {
       state.token = token
+      localStorage.setItem('token', token)
     },
+
     LOGOUT(state) {
       state.user = null
       state.token = null
@@ -33,12 +37,14 @@ export default createStore({
       //   commit('SET_USER', response.data.user)
       //   commit('SET_TOKEN', response.data.token)
       // })
-      
-      // Dummy data for simulation
-      const dummyUser = { id: 1, name: 'John Doe' }
-      const dummyToken = 'abcdef123456'
-      commit('SET_USER', dummyUser)
-      commit('SET_TOKEN', dummyToken)
+      return axios.post('http://localhost:5000/api/v1/auth/login', credentials).then(response => {
+        commit('SET_USER', response.data.data)
+        commit('SET_TOKEN', response.data.data.token)
+
+      })
+
+
+
     },
     logout({ commit }) {
       commit('LOGOUT')
