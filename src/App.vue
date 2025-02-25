@@ -1,22 +1,16 @@
 <template>
-  <div >
-    <header>
-      <h1 class="text-sx">My App</h1>
-    </header>
-    <main>
+  <div class="">
+    <Navbar />
+    <main >
       <router-view />
     </main>
-    <footer>
-      <p>© 2025 My Company</p>
-    </footer>
+   
   </div>
 </template>
 
-<script>
+<script setup>
+import Navbar from './components/SharedComponents/Navbar.vue';
 
 </script>
 
-<style scoped>
-
-
-</style>
+<style scoped></style>

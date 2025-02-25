@@ -2,8 +2,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/Login.vue";
 import Home from "../views/Home.vue";
-import Dashboard from "../views/Dashboard.vue";
 import store from "../store";
+import EstimatePage from "../views/EstimatePage.vue";
 
 const routes = [
   {
@@ -19,11 +19,12 @@ const routes = [
     meta: { requiresAuth: false },
   },
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    component: Dashboard,
-    meta: { requiresAuth: true },
+    path: "/estimate",
+    name: "Estimate",
+    component: EstimatePage,
+    meta: { requiresAuth: false },
   },
+  
 ];
 
 const router = createRouter({
