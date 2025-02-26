@@ -11,7 +11,7 @@
     <div class="absolute w-full h-full backdrop-brightness-50 -z-10">
      
     </div>
-    <div class="py-8 font-inter px-44 text-white ">
+    <div class="py-16 font-inter px-44 text-white ">
       <h2 class="text-4xl font-semibold">
     Dapatkan Estimasimu dengan <span class="font-bold">Mudah</span>
   </h2>

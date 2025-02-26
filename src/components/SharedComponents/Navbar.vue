@@ -12,19 +12,17 @@
                     'navbar absolute right-0 z-30 w-[250px] rounded bg-white px-6 py-4 duration-300  lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100',
                     navbarOpen ? 'visibility top-full opacity-100' : 'invisible top-[120%] opacity-0'
                 ]">
-                    <ul class="block lg:flex lg:space-x-12">
+                    <ul class="block lg:flex lg:space-x-12 py-5">
                         <li v-for="(menuItem, index) in menuData" :key="index" class="group relative">
                             <router-link v-if="menuItem.path" :to="menuItem.path" :class="[
-                                'flex py-2 text-base lg:mr-0 lg:inline-flex lg:px-0 lg:py-6',
-                                currentPath === menuItem.path
-                                    ? 'text-primary '
-                                    : 'text-dark hover:text-primary'
+                                'flex text-lg font-medium lg:mr-0 lg:inline-flex lg:px-0 py-1',
+                                currentPath === menuItem.path ? 'text-teal-500 border-b border-teal-500' : 'text-dark hover:text-black'
                             ]">
                                 {{ menuItem.title }}
                             </router-link>
                             <div v-else>
                                 <p @click="handleSubmenu(index)"
-                                    class="flex cursor-pointer items-center justify-between py-2 text-base text-dark group-hover:text-primary  dark:group-hover:text-white lg:mr-0 lg:inline-flex lg:px-0 lg:py-6">
+                                    class="flex cursor-pointer items-center justify-between py-2 text-base text-dark group-hover:text-black  dark:group-hover:text-white lg:mr-0 lg:inline-flex lg:px-0 lg:py-6">
                                     {{ menuItem.title }}
                                     <span class="pl-3">
                                         <svg width="25" height="24" viewBox="0 0 25 24">
@@ -40,7 +38,7 @@
                                 ]">
                                     <router-link v-for="(submenuItem, sIndex) in menuItem.submenu" :key="sIndex"
                                         :to="submenuItem.path"
-                                        class="block rounded py-2.5 text-sm text-dark hover:text-primary lg:px-3">
+                                        class="block rounded py-2.5 text-sm text-dark hover:text-black lg:px-3">
                                         {{ submenuItem.title }}
                                     </router-link>
                                 </div>
@@ -48,11 +46,13 @@
                         </li>
                     </ul>
                 </nav>
-                
-                <div class="">
+                <div class="my-3 ml-6 w-[1px] h-7 bg-black">
+
+                </div>
+                <div class="mx-4">
                     <router-link to="/login"
                     class="hidden py-3 text-base font-medium text-dark hover:opacity-70 md:block">
-                        <ArrowRightEndOnRectangleIcon class="w-12 h-7" />
+                        <ArrowRightEndOnRectangleIcon class="h-7 font-light" />
                 </router-link>
                 </div>
                 
