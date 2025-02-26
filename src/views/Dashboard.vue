@@ -6,9 +6,6 @@ import TableHistory from '../components/TableHistory.vue';
 </script>
 <template>
     <div class="flex flex-col pb-8">
-        <div class="h-12">
-            navbar
-        </div> 
         <Banner />
         <div class="mx-auto w-full">
             <div class="px-52">
