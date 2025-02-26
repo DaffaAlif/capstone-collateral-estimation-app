@@ -65,6 +65,16 @@ export const postLogin = async (credentials) => {
  }
 }
 
+export const estimate = async (data) => {
+  try {
+    const response = await api.post('/api/v1/predict', data)
+    return response;
+   } catch (error) {
+    console.error(error);
+    throw error;
+   }
+}
+
 export const fetchToken = async () =>{
   try {
     const response = await api.get('/api/v1/auth/me')

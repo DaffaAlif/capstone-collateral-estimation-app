@@ -9,12 +9,6 @@ import Faq from "../views/Faq.vue";
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
-    component: Home,
-    meta: { requiresAuth: false },
-  },
-  {
     path: "/login",
     name: "Login",
     component: Login,
