@@ -37,7 +37,7 @@ export default createStore({
       //   commit('SET_USER', response.data.user)
       //   commit('SET_TOKEN', response.data.token)
       // })
-      return axios.post('http://localhost:5000/api/v1/auth/login', credentials).then(response => {
+      return axios.post('192.168.22.0:3000/api/v1/auth/login', credentials).then(response => {
         commit('SET_USER', response.data.data)
         commit('SET_TOKEN', response.data.data.token)
       }).catch(error => {

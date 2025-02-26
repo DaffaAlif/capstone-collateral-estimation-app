@@ -6,17 +6,20 @@
 
             <!-- Close Button -->
             <button @click="handleOpen" class="absolute top-2 right-2 text-gray-600 hover:text-red-500">
-                &times;
+                &times; 
             </button>
 
             <!-- Form Title -->
-            <h2 class="text-xl font-semibold mb-4 text-center">Save</h2>
+            <h2 class="text-xl font-semibold mb-4 text-center">Save </h2>
 
             <!-- Form Fields -->
             <form @submit.prevent="handleSubmit">
                 <div class="mb-3">
                     <label class="block text-sm font-medium text-gray-700">Name</label>
                     <input v-model="name" type="text" class="w-full p-2 border border-gray-300 rounded mt-1" required>
+                </div>
+                <div v-if="!is_completed" class="text-red-500 text-xs">
+                    Anda belum mengisi semua data. Form akan disimpan dalam bentuk draft 
                 </div>
 
                 <!-- Submit Button -->
@@ -32,13 +35,14 @@
 import { ref } from 'vue'
 const props = defineProps({
     isOpen: Boolean,
-   handleOpen : Function
+    is_completed: Boolean,
+    handleOpen: Function
 })
 
-// Form Data
+
+
 const name = ref('')
 
-// Form Submission Handler
 const handleSubmit = () => {
     console.log('Name:', name.value)
 
