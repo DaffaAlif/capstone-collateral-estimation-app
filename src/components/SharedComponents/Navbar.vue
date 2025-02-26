@@ -17,14 +17,14 @@
                             <router-link v-if="menuItem.path" :to="menuItem.path" :class="[
                                 'flex py-2 text-base lg:mr-0 lg:inline-flex lg:px-0 lg:py-6',
                                 currentPath === menuItem.path
-                                    ? 'text-primary dark:text-white'
-                                    : 'text-dark hover:text-primary dark:text-white/70 dark:hover:text-white'
+                                    ? 'text-primary '
+                                    : 'text-dark hover:text-primary'
                             ]">
                                 {{ menuItem.title }}
                             </router-link>
                             <div v-else>
                                 <p @click="handleSubmenu(index)"
-                                    class="flex cursor-pointer items-center justify-between py-2 text-base text-dark group-hover:text-primary dark:text-white/70 dark:group-hover:text-white lg:mr-0 lg:inline-flex lg:px-0 lg:py-6">
+                                    class="flex cursor-pointer items-center justify-between py-2 text-base text-dark group-hover:text-primary  dark:group-hover:text-white lg:mr-0 lg:inline-flex lg:px-0 lg:py-6">
                                     {{ menuItem.title }}
                                     <span class="pl-3">
                                         <svg width="25" height="24" viewBox="0 0 25 24">
@@ -40,7 +40,7 @@
                                 ]">
                                     <router-link v-for="(submenuItem, sIndex) in menuItem.submenu" :key="sIndex"
                                         :to="submenuItem.path"
-                                        class="block rounded py-2.5 text-sm text-dark hover:text-primary dark:text-white/70 dark:hover:text-white lg:px-3">
+                                        class="block rounded py-2.5 text-sm text-dark hover:text-primary lg:px-3">
                                         {{ submenuItem.title }}
                                     </router-link>
                                 </div>
@@ -49,7 +49,7 @@
                     </ul>
                 </nav>
                 <router-link to="/signin"
-                    class="hidden px-7 py-3 text-base font-medium text-dark hover:opacity-70 dark:text-white md:block">
+                    class="hidden px-7 py-3 text-base font-medium text-dark hover:opacity-70  md:block">
                     Sign In
                 </router-link>
             </div>

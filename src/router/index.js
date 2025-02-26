@@ -2,6 +2,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/Login.vue";
 import Home from "../views/Home.vue";
+import Dashboard from "../views/Dashboard.vue";
 import store from "../store";
 import EstimatePage from "../views/EstimatePage.vue";
 import Faq from "../views/Faq.vue";
@@ -31,7 +32,12 @@ const routes = [
     component: Faq,
     meta: { requiresAuth: false },
   },
-  
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    component: Dashboard,
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = createRouter({
@@ -42,7 +48,7 @@ const router = createRouter({
 // Global Navigation Guard
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    const isAuthenticated = store.getters.isAuthenticated; 
+    const isAuthenticated = store.getters.isAuthenticated;
     if (!isAuthenticated) {
       next({
         path: "/login",
