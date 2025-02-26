@@ -1,7 +1,7 @@
 <template>
   <div class="">
-    <Navbar v-if="route.name !== 'Login' && route.name !== 'register'" :handleOpen="handleOpen"/>
-    <main :class="route.name !== 'Login' && route.name !== 'register' ? 'pt-16' : ''">
+    <Navbar v-if="route.name !== 'Login' && route.name !== 'Home'" :handleOpen="handleOpen"/>
+    <main :class="route.name !== 'Login' && route.name !== 'Home' ? 'pt-16' : ''">
       <router-view />
     </main>
     <LogOutModal :isOpen="isOpen" :handleOpen="handleOpen"/>
