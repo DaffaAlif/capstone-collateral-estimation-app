@@ -1,20 +1,16 @@
 <template>
-  <div >
-    <header>
-    </header>
-    <main>
+  <div class="">
+    <Navbar />
+    <main >
       <router-view />
     </main>
-    <footer>
-    </footer>
+   
   </div>
 </template>
 
-<script>
+<script setup>
+import Navbar from './components/SharedComponents/Navbar.vue';
 
 </script>
 
-<style scoped>
-
-
-</style>
+<style scoped></style>
