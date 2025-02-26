@@ -144,13 +144,13 @@
                                 Rp. {{ priceEstimate }}
                             </h1>
                             <p class="text-center text-[12px]">
-                                Estimation Error <span class="text-red-500">{{ errorPercent }}%</span>
+                                Estimation Error <span class="text-red-500">19%</span>
                             </p>
                         </div>
                         <p class="text-center font-bold mt-4">Range Estimasi</p>
                         <div class="bg-[#FFFFFF] rounded-md p-2 mt-2">
                             <p class="text-center font-bold text-[#24A29F] text-[18px]">
-                                Rp. {{ priceRange.min }} - Rp. {{ priceRange.max }}
+                                Rp. {{priceEstimate - priceEstimate *  0.19}} - Rp. {{ priceEstimate + priceEstimate *  0.19 }}
                             </p>
                         </div>
                     </div>
@@ -180,6 +180,7 @@ import SaveModal from '../components/SaveModal.vue';
 import { estimate } from '../api/api'
 
 
+
 const form = reactive({
     city: '',
     district: '',
@@ -195,6 +196,7 @@ const form = reactive({
     numberOfCarports: null,
     selectedFacilities: []
 });
+
 
 // Reactive errors object
 const errors = reactive({});
@@ -294,12 +296,14 @@ async function handleSubmit() {
         isLoading.value = true;
         const response = await estimate(
             data
-        );
-        priceEstimate.value = response.data.priceEstimate;
-        errorPercent.value = response.data.errorPercent;
-        priceRange.min = response.data.priceRange.min;
-        priceRange.max = response.data.priceRange.max;
-        console.log(response.data);
+        )
+
+        console.log(response.data.data)
+        priceEstimate.value = response.data.data;
+        // errorPercent.value = response.data.errorPercent;
+        // priceRange.min = response.data.priceRange.min;
+        // priceRange.max = response.data.priceRange.max;
+        // console.log(response.data);
     } catch (error) {
         console.error("API call failed:", error);
     } finally {
