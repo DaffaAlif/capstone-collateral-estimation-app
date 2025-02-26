@@ -80,6 +80,7 @@ const openIndex = ref(null);
 const menuData = ref([
     { path: "/dashboard", title: "Home" },
     { path: "/estimate", title: "Form" },
+    { path: "/faq", title: "FAQ" },
 
 ]);
 
