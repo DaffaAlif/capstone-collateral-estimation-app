@@ -73,8 +73,9 @@ const props = defineProps({
 const navbarOpen = ref(false);
 const openIndex = ref(null);
 const menuData = ref([
-    { path: "/", title: "History" },
+    { path: "/", title: "Home" },
     { path: "/estimate", title: "Form" },
+    { path: "/faq", title: "FAQ" },
 
 ]);
 
