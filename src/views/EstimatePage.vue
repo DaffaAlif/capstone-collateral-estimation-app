@@ -9,7 +9,7 @@
             <h1 class="text-[32px] font-bold">Lokasi</h1>
             <div class="flex">
               <div>
-                <label for="city-select" class="mr-2">Kota</label>
+                <label for="city-select" class="mr-2 text-gray-400" >Kota</label>
                 <select
                   id="city-select"
                   v-model="selectedCity"
@@ -25,12 +25,12 @@
                 </div>
               </div>
               <div>
-                <label for="district-select" class="ml-4">Distrik</label>
+                <label for="district-select" class=" text-gray-400">Distrik</label>
                 <select
                   id="district-select"
                   v-model="selectedDistrict"
                   :disabled="selectedCity === ''"
-                  class="border border-gray-400 p-2 rounded-xl w-[492px] ml-4"
+                  class="border border-gray-400 p-2 rounded-xl w-[492px]"
                 >
                   <option disabled value="">Pilih Distrik</option>
                   <option
@@ -51,7 +51,7 @@
             <h1 class="text-[32px] font-bold">Detail Properti</h1>
             <div class="flex">
               <div>
-                <label for="land-area">Luas Tanah (m2)</label>
+                <label for="land-area" class="text-gray-400">Luas Tanah (m2)</label>
                 <input
                   id="land-area"
                   type="number"
@@ -64,7 +64,7 @@
                 </div>
               </div>
               <div>
-                <label for="building-area">Luas Bangunan (m2)</label>
+                <label for="building-area" class="text-gray-400">Luas Bangunan (m2)</label>
                 <input
                   id="building-area"
                   type="number"
@@ -79,7 +79,7 @@
             </div>
             <div class="flex">
               <div>
-                <label for="floors">Jumlah Lantai</label>
+                <label for="floors" class="text-gray-400">Jumlah Lantai</label>
                 <input
                   id="floors"
                   type="number"
@@ -92,7 +92,7 @@
                 </div>
               </div>
               <div>
-                <label for="electrical-power">Kekuatan Listrik (watt)</label>
+                <label for="electrical-power" class="text-gray-400">Kekuatan Listrik (watt)</label>
                 <input
                   id="electrical-power"
                   type="number"
@@ -107,7 +107,7 @@
             </div>
             <div class="flex">
               <div>
-                <label for="certificate-select">Sertifikat</label>
+                <label for="certificate-select" class="text-gray-400">Sertifikat</label>
                 <select
                   id="certificate-select"
                   v-model="selectedCertificate"
@@ -130,7 +130,7 @@
                 </div>
               </div>
               <div>
-                <label for="property-condition">Kondisi Properti</label>
+                <label for="property-condition" class="text-gray-400">Kondisi Properti</label>
                 <select
                   id="property-condition"
                   v-model="propertyCondition"
@@ -158,7 +158,7 @@
             <h1 class="text-[32px] font-bold">Fasilitas</h1>
             <div class="flex">
               <div>
-                <label for="rooms">Jumlah Kamar</label>
+                <label for="rooms" class="text-gray-400">Jumlah Kamar</label>
                 <input
                   id="rooms"
                   type="number"
@@ -171,7 +171,7 @@
                 </div>
               </div>
               <div>
-                <label for="bathrooms">Jumlah Kamar Mandi</label>
+                <label for="bathrooms" class="">Jumlah Kamar Mandi</label>
                 <input
                   id="bathrooms"
                   type="number"
@@ -187,10 +187,10 @@
                 </div>
               </div>
             </div>
-            <div class="w-2/3">
+            <div >
               <p>Fasilitas yang tersedia</p>
               <div class="grid grid-cols-4 gap-1">
-                <label v-for="facility in facilities" :key="facility.value">
+                <label v-for="facility in facilities" :key="facility.value" class="text-[18px]">
                   <input
                     type="checkbox"
                     :value="facility.value"
@@ -210,7 +210,7 @@
           <div class="bg-[#F3F3F3] px-4 py-2 rounded-md">
             <h1 class="text-[24px] text-center">Estimasi Harga</h1>
             <div class="bg-white rounded-md mt-3 p-2">
-              <h1 class="text-center font-bold text-[24px]">Rp. 1.000.000</h1>
+              <h1 class="text-center font-bold text-[32px] text-[#24A29F]">Rp 1.500.000.000</h1>
               <p class="text-center text-[12px]">
                 Estimation Error <span class="text-red-500">19%</span>
               </p>

@@ -4,6 +4,7 @@ import Login from "../views/Login.vue";
 import Home from "../views/Home.vue";
 import store from "../store";
 import EstimatePage from "../views/EstimatePage.vue";
+import Faq from "../views/Faq.vue";
 
 const routes = [
   {
@@ -22,6 +23,12 @@ const routes = [
     path: "/estimate",
     name: "Estimate",
     component: EstimatePage,
+    meta: { requiresAuth: false },
+  },
+  {
+    path: "/faq",
+    name: "Faq",
+    component: Faq,
     meta: { requiresAuth: false },
   },
   
