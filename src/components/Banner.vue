@@ -18,13 +18,13 @@
   <p class="w-[500px] mt-1">
     Masukkan detail properti dan temukan perkiraan nilai pasar sebagai agunan dengan cepat dan akurat.
   </p>
-    <a href="#" class="bg-teal-500 py-4 rounded-xl w-[300px] text-white font-semibold text-lg flex items-center justify-center gap-2 mt-10">
+    <router-link to="/estimate" class="bg-teal-500 py-4 rounded-xl w-[300px] text-white font-semibold text-lg flex items-center justify-center gap-2 mt-10">
       <p>Mulai Estimasikan Properti</p>
       <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-1">
   <path d="M1.5 7H14M14 7L8 1M14 7L8 13" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
 
-    </a>
+    </router-link>
     </div>
   
  </div>

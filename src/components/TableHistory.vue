@@ -8,46 +8,39 @@ import { ChevronLeftIcon, ChevronRightIcon, PencilIcon } from '@heroicons/vue/24
 import { TrashIcon } from '@heroicons/vue/24/solid'
 import { fetchHistories } from '../api/api'
 
+const props = defineProps({
+  handleOpen: Function,
+  getHistories: Function,
+  histories: Array,
+  totalhistories: Number
+})
 
-const histories = ref([
-  
-])
-const totalhistories = ref(0)
+
+
 const currentPage = ref(1)
 
-const getHistories = async() => {
-  try {
-    const response = await fetchHistories(currentPage.value)
-    histories.value = response.data.data.histories
-    totalhistories.value = response.data.data.total_data
-
-    console.log(response.data.data);
-  } catch (error) {
-    console.error(error);
-  }
-}
 
 const nextPage = () => {
   if (currentPage.value < Math.ceil(totalhistories.value / 5)) {
     currentPage.value++
-    getHistories()
+    props.getHistories()
   }
 }
 
 const prevPage = () => {
   if (currentPage.value > 1) {
     currentPage.value--
-    getHistories()
+    props.getHistories()
   }
 }
 
 const choosePage = (page) => {
   currentPage.value = page
-  getHistories()
+  props.getHistories()
 }
 
 onMounted(() => {
-  getHistories()
+  props.getHistories()
 })
 </script>
 
@@ -71,18 +64,22 @@ onMounted(() => {
       <th class="px-4">No</th>
       <th>Tanggal</th>
       <th >Nama</th>
+      <th> Kota</th>
+      <th> Estimasi </th>
     </tr> 
     <tr class="h-10 border-b border-b-neutral-400" v-for="(history, index) in histories">
       <td class="px-4">{{ ((currentPage - 1)  * 5 ) +index + 1 }}</td>
       <td>{{ new Date(history.updated_at).toLocaleDateString() }}</td>
+      <td>{{ history.name }}</td>
+      <td>{{ history.city }}</td>
       <td>
         <div class="flex items-center gap-2">
-          <p class="flex-1">{{ history.name }}</p>
+          <p class="flex-1">Rp {{  history.price_in_rp.toLocaleString('id-ID') }}</p>
           <div class="flex gap-2 items-center py-2 w-16">
             <button >
               <PencilIcon class="w-6 h-6 text-neutral-400" />
             </button>
-            <button >
+            <button @click="handleOpen(history)">
               <img src="../assets/trash.svg" alt="trash" width="40" height="20" class=" w-6 h-[22px]" />
             </button>
           </div>

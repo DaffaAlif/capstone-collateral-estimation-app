@@ -45,6 +45,16 @@ export const fetchHistories = async (currentPage) => {
   }
 };
 
+export const deleteHistory = async (id) => {
+  try {
+    const response = await api.delete(`/api/v1/history/${id}`);
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const postLogin = async (credentials) => {
  try {
   const response = await api.post('/api/v1/auth/login', credentials)

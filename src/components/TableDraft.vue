@@ -7,47 +7,39 @@ import { ChevronLeftIcon, ChevronRightIcon, PencilIcon } from '@heroicons/vue/24
 import { TrashIcon } from '@heroicons/vue/24/solid'
 import { fetchDrafts } from '../api/api'
 
-const drafts = ref([
-  
-])
-const totalDrafts = ref(0)
+const props = defineProps({
+  handleOpen: Function,
+  getDrafts: Function,
+  drafts: Array,
+  totalDrafts: Number
+})
+
+
 const currentPage = ref(1)
 
 
-const getDrafts = async() => {
-  try {
-    const response = await fetchDrafts(currentPage.value)
-    drafts.value = response.data.data.histories
-    totalDrafts.value = response.data.data.total_data
 
-    console.log(response.data.data);
-  } catch (error) {
-    console.error(error);
-  }
-}
 
 const nextPage = () => {
   if (currentPage.value < Math.ceil(totalDrafts.value / 5)) {
     currentPage.value++
-    getDrafts()
+    props.getDrafts()
   }
 }
 
 const prevPage = () => {
   if (currentPage.value > 1) {
     currentPage.value--
-    getDrafts()
+    props.getDrafts()
   }
 }
 
 const choosePage = (page) => {
   currentPage.value = page
-  getDrafts()
+  props.getDrafts()
 }
 
-onMounted(() => {
-  getDrafts()
-})
+
 </script>
 
 <template>
@@ -90,7 +82,7 @@ onMounted(() => {
             <button >
               <PencilIcon class="w-6 h-6 text-neutral-400" />
             </button>
-            <button >
+            <button @click="handleOpen(draft)">
               <img src="../assets/trash.svg" alt="trash" class=" w-6 h-[22px]" />
             </button>
           </div>
