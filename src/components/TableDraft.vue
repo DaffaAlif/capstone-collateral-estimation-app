@@ -91,7 +91,7 @@ onMounted(() => {
               <PencilIcon class="w-6 h-6 text-neutral-400" />
             </button>
             <button >
-              <img src="../assets/trash.svg" alt="trash" width="40" height="20" class=" w-6 h-5" />
+              <img src="../assets/trash.svg" alt="trash" class=" w-6 h-[22px]" />
             </button>
           </div>
         </div>
