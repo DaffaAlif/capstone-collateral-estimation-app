@@ -8,14 +8,32 @@ import router from '../router'
 const email = ref('')
 const password = ref('')
 const hidden = ref(true)
+const errors = ref({
+  email: '',
+  password: '',
+  login: ''
+})
+
+const validateLogin = () => {
+  if (!password.value) {
+    errors.value.password = 'Password harus diisi'
+  } else if (password.value.length < 8) {
+    errors.value.password = 'Password minimal 8 karakter'
+  } else {
+    errors.value.password = ''
+  }
+}
 
 
 const handleLogin = async () => {
   try {
-    store.dispatch('login', { email: email.value, password: password.value })
+    validateLogin();
+    await store.dispatch('login', { email: email.value, password: password.value })
     router.push({ name: 'Dashboard' })
   } catch (error) {
-    console.error(error)
+    if (error.response.data.message == "User not found" || error.response.data.message == "Wrong password") {
+      errors.value.login = 'Email atau password salah'
+    }
   }
 }
 
@@ -30,21 +48,24 @@ const toggleHidden = () => {
 <template>
  <div class="flex flex-col justify-center items-center w-[520px] font-inter">
     <img src="../assets/logo.png" class="mx-auto w-40 object-contain mb-8">
-    <div class="mb-12">
+    <div class="mb-4">
       <h2 class="text-3xl font-bold">Selamat Datang Insan BSI</h2>
-    <p class="text-lg">Masuk dan dapatkan perkiraan nilai properti sebagai agunan nasabah dengan cepat.</p>
+      <p class="text-lg">Masuk dan dapatkan perkiraan nilai properti sebagai agunan nasabah dengan cepat.</p>
     </div>
-   <form class="flex flex-col gap-4 w-full my">
+    <p v-if="errors.login" class="text-red-500">{{ errors.login }}</p>
+   <form class="flex flex-col gap-4 w-full mt-4" @submit.prevent="handleLogin">
     <div class="gap-2">
       <label class="text-zinc-700">Email</label>
       <input placeholder="Email" type="email" name="email"
       class="border border-neutral-400 rounded py-4 px-4 w-full"  v-model="email"/>
+      <span class="text-red-500" v-if="errors.email">{{ errors.email }}</span>
     </div>
-    <div class="gap-2 relative">
+    <div class="gap-2">
       <label class="text-zinc-700">Password</label>
-      <input placeholder="Password" :type="hidden ? 'password' : 'text'" name="password"
+      <div class="relative flex justify-center align-middle">
+              <input placeholder="Password" :type="hidden ? 'password' : 'text'" name="password"
       class="border border-neutral-400 rounded py-4 px-4 w-full" v-model="password"/>
-      <button class="absolute right-4 top-1/2 cursor-pointer" type="button" @click="toggleHidden">
+      <button class="absolute right-4 cursor-pointer h-full " type="button" @click="toggleHidden">
         <div :class="hidden ? 'block' : 'hidden'">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
@@ -58,10 +79,12 @@ const toggleHidden = () => {
 
         </div>
       </button>
+      </div>
+      <span class="text-red-500" v-if="errors.password">{{ errors.password }}</span>
     </div>
-   <button @click="handleLogin" class="bg-teal-500 w-full py-4 rounded-xl text-white font-semibold text-lg flex items-center justify-center gap-2 mt-8">
+   <button class="bg-teal-500 w-full py-4 rounded-xl text-white font-semibold text-lg flex items-center justify-center gap-2 mt-8" type="submit">
     <p>Login</p>
-    <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-1">
+    <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="">
 <path d="M1.5 7H14M14 7L8 1M14 7L8 13" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 
