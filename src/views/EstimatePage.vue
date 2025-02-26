@@ -1,237 +1,186 @@
 <template>
     <div class="px-30 py-10">
-      <form @submit.prevent="handleSubmit">
-        <h1 class="text-[48px] font-bold text-teal-500">Estimasi Properti</h1>
-        <div class="h-[2px] w-full bg-teal-500"></div>
-        <div class="flex mt-10">
-          <!-- Left Column: Form Fields -->
-          <div class="w-3/5">
-            <!-- Lokasi Section -->
-            <h1 class="text-[32px] font-bold">Lokasi</h1>
-            <div class="flex gap-4">
-              <div class="field">
-                <label for="city-select" class="mr-2 text-gray-400">Kota</label>
-                <select
-                  id="city-select"
-                  v-model="form.city"
-                  class="border border-gray-400 p-2 rounded-xl w-[492px]"
-                >
-                  <option disabled value="">Pilih Kota</option>
-                  <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
-                </select>
-                <div v-if="errors.city" class="text-red-500 text-xs">{{ errors.city }}</div>
-              </div>
-              <div class="field">
-                <label for="district-select" class="text-gray-400">Distrik</label>
-                <select
-                  id="district-select"
-                  v-model="form.district"
-                  :disabled="!form.city"
-                  class="border border-gray-400 p-2 rounded-xl w-[492px]"
-                >
-                  <option disabled value="">Pilih Distrik</option>
-                  <option v-for="district in districts" :key="district" :value="district">
-                    {{ district }}
-                  </option>
-                </select>
-                <div v-if="errors.district" class="text-red-500 text-xs">{{ errors.district }}</div>
-              </div>
-            </div>
-  
-            <!-- Detail Properti Section -->
-            <h1 class="text-[32px] font-bold mt-6">Detail Properti</h1>
-            <div class="flex gap-4">
-              <div class="field">
-                <label for="land-area" class="text-gray-400">Luas Tanah (m2)</label>
-                <input
-                  id="land-area"
-                  type="number"
-                  placeholder="ex: 150"
-                  v-model.number="form.landArea"
-                  class="border border-gray-400 p-2 rounded-xl w-[492px]"
-                />
-                <div v-if="errors.landArea" class="text-red-500 text-xs">{{ errors.landArea }}</div>
-              </div>
-              <div class="field">
-                <label for="building-area" class="text-gray-400">Luas Bangunan (m2)</label>
-                <input
-                  id="building-area"
-                  type="number"
-                  placeholder="ex: 110"
-                  v-model.number="form.buildingArea"
-                  class="border border-gray-400 p-2 rounded-xl w-[492px]"
-                />
-                <div v-if="errors.buildingArea" class="text-red-500 text-xs">{{ errors.buildingArea }}</div>
-              </div>
-            </div>
-            <div class="flex gap-4 mt-4">
-              <div class="field">
-                <p for="floors" class="text-gray-400">Jumlah Lantai</p>
-                <input
-                  id="floors"
-                  type="number"
-                  placeholder="ex: 2"
-                  v-model.number="form.floors"
-                  class="border border-gray-400 p-2 rounded-xl w-[492px]"
-                />
-                <div v-if="errors.floors" class="text-red-500 text-xs">{{ errors.floors }}</div>
-              </div>
-              <div class="field">
-                <label for="electrical-power" class="text-gray-400">Kekuatan Listrik (watt)</label>
-                <input
-                  id="electrical-power"
-                  type="number"
-                  placeholder="ex: 1800"
-                  v-model.number="form.electricalPower"
-                  class="border border-gray-400 p-2 rounded-xl w-[492px]"
-                />
-                <div v-if="errors.electricalPower" class="text-red-500 text-xs">{{ errors.electricalPower }}</div>
-              </div>
-            </div>
-            <div class="flex gap-4 mt-4">
-              <div class="field">
-                <label for="certificate-select" class="text-gray-400">Sertifikat</label>
-                <select
-                  id="certificate-select"
-                  v-model="form.certificate"
-                  class="border border-gray-400 p-2 rounded-xl w-[492px]"
-                >
-                  <option disabled value="">Pilih Jenis Sertifikat</option>
-                  <option v-for="certificate in certificates" :key="certificate.value" :value="certificate.value">
-                    {{ certificate.label }}
-                  </option>
-                </select>
-                <div v-if="errors.certificate" class="text-red-500 text-xs">{{ errors.certificate }}</div>
-              </div>
-              <div class="field">
-                <label for="property-condition" class="text-gray-400">Kondisi Properti</label>
-                <select
-                  id="property-condition"
-                  v-model="form.propertyCondition"
-                  class="border border-gray-400 p-2 rounded-xl w-[492px]"
-                >
-                  <option disabled value="">Pilih Kondisi Properti</option>
-                  <option v-for="condition in propertyConditions" :key="condition.value" :value="condition.value">
-                    {{ condition.label }}
-                  </option>
-                </select>
-                <div v-if="errors.propertyCondition" class="text-red-500 text-xs">{{ errors.propertyCondition }}</div>
-              </div>
-            </div>
-  
-            <!-- Fasilitas Section -->
-            <h1 class="text-[32px] font-bold mt-6">Fasilitas</h1>
-            <div class="flex gap-4">
-              <div class="field">
-                <label for="rooms" class="text-gray-400">Jumlah Kamar</label>
-                <input
-                  id="rooms"
-                  type="number"
-                  placeholder="ex: 5"
-                  v-model.number="form.numberOfRooms"
-                  class="border border-gray-400 p-2 rounded-xl w-[492px]"
-                />
-                <div v-if="errors.numberOfRooms" class="text-red-500 text-xs">{{ errors.numberOfRooms }}</div>
-              </div>
-              <div class="field">
-                <label for="bathrooms" class="text-gray-400">Jumlah Kamar Mandi</label>
-                <input
-                  id="bathrooms"
-                  type="number"
-                  placeholder="ex: 4"
-                  v-model.number="form.numberOfBathrooms"
-                  class="border border-gray-400 p-2 rounded-xl w-[492px]"
-                />
-                <div v-if="errors.numberOfBathrooms" class="text-red-500 text-xs">{{ errors.numberOfBathrooms }}</div>
-              </div>
-            </div>
-            <div class="flex gap-4 mt-4">
-              <div class="field">
-                <label for="garages" class="text-gray-400">Kapasitas Garasi</label>
-                <input
-                  id="garages"
-                  type="number"
-                  placeholder="ex: 2"
-                  v-model.number="form.numberOfGarages"
-                  class="border border-gray-400 p-2 rounded-xl w-[492px]"
-                />
-                <div v-if="errors.numberOfGarages" class="text-red-500 text-xs">{{ errors.numberOfGarages }}</div>
-              </div>
-              <div class="field">
-                <label for="carports" class="text-gray-400">Jumlah Carport</label>
-                <input
-                  id="carports"
-                  type="number"
-                  placeholder="ex: 1"
-                  v-model.number="form.numberOfCarports"
-                  class="border border-gray-400 p-2 rounded-xl w-[492px]"
-                />
-                <div v-if="errors.numberOfCarports" class="text-red-500 text-xs">{{ errors.numberOfCarports }}</div>
-              </div>
-            </div>
-            <div class="mt-4">
-              <p class="text-gray-400">Fasilitas yang tersedia</p>
-              <div class="grid grid-cols-3 gap-1">
-                <label v-for="facility in facilities" :key="facility.value" class="text-[18px]">
-                  <input type="checkbox" :value="facility.value" v-model="form.selectedFacilities" />
-                  {{ facility.label }}
-                </label>
-              </div>
-            </div>
-          </div>
-  
-          <!-- Right Column: Estimation Card -->
-          <div class="w-[411px] ml-[150px]">
-            <div class="bg-[#F3F3F3] px-4 py-6 rounded-md">
-              <h1 class="text-[24px] text-center font-medium">Estimasi Harga</h1>
-              <div class="bg-white rounded-md mt-3 p-2">
-                <h1 class="text-center font-bold text-[32px] text-[#24A29F]">
-                  Rp. {{ priceEstimate }}
-                </h1>
-                <p class="text-center text-[12px]">
-                  Estimation Error <span class="text-red-500">{{ errorPercent }}%</span>
-                </p>
-              </div>
-              <p class="text-center font-bold mt-4">Range Estimasi</p>
-              <div class="bg-[#FFFFFF] rounded-md p-2 mt-2">
-                <p class="text-center font-bold text-[#24A29F] text-[18px]">
-                  Rp. {{ priceRange.min }} - Rp. {{ priceRange.max }}
-                </p>
-              </div>
-            </div>
-            <div class="flex flex-col">
-              <button
-                type="submit"
-                class="btn btn-blue bg-[#24A29F] text-white rounded-md p-3 mt-10"
-                :disabled="isLoading"
-              >
-                {{ isLoading ? "Estimating..." : "Estimate" }}
-              </button>
-              <button
-                type="button"
-                @click="handleOpen"
-                class="btn btn-blue text-[#24A29F] border-[#24A29F] border-[2px] rounded-md p-3 mt-4"
-              >
-                Simpan
-              </button>
-            </div>
-          </div>
-        </div>
-      </form>
-      <!-- Modal Component -->
-      <SaveModal :isOpen="isOpen" :handleOpen="handleOpen" :is_completed="is_completed" />
-    </div>
-  </template>
-  
-  <script setup>
-  import { reactive, ref, computed } from 'vue';
-  import axios from 'axios';
-  import city_to_district from '../data/city_to_districts';
-  import district_lat_long from '../data/district_lat_long';
-  import SaveModal from '../components/SaveModal.vue';
+        <form @submit.prevent="handleSubmit">
+            <h1 class="text-[48px] font-bold text-teal-500">Estimasi Properti</h1>
+            <div class="h-[2px] w-full bg-teal-500"></div>
+            <div class="flex mt-10">
+                <!-- Left Column: Form Fields -->
+                <div class="w-3/5">
+                    <!-- Lokasi Section -->
+                    <h1 class="text-[32px] font-bold">Lokasi</h1>
+                    <div class="flex gap-4">
+                        <div class="field">
+                            <label for="city-select" class="mr-2 text-gray-400">Kota</label>
+                            <select id="city-select" v-model="form.city"
+                                class="border border-gray-400 p-2 rounded-xl w-[492px]">
+                                <option disabled value="">Pilih Kota</option>
+                                <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
+                            </select>
+                            <div v-if="errors.city" class="text-red-500 text-xs">{{ errors.city }}</div>
+                        </div>
+                        <div class="field">
+                            <label for="district-select" class="text-gray-400">Distrik</label>
+                            <select id="district-select" v-model="form.district" :disabled="!form.city"
+                                class="border border-gray-400 p-2 rounded-xl w-[492px]">
+                                <option disabled value="">Pilih Distrik</option>
+                                <option v-for="district in districts" :key="district" :value="district">
+                                    {{ district }}
+                                </option>
+                            </select>
+                            <div v-if="errors.district" class="text-red-500 text-xs">{{ errors.district }}</div>
+                        </div>
+                    </div>
 
+                    <!-- Detail Properti Section -->
+                    <h1 class="text-[32px] font-bold mt-6">Detail Properti</h1>
+                    <div class="flex gap-4">
+                        <div class="field">
+                            <label for="land-area" class="text-gray-400">Luas Tanah (m2)</label>
+                            <input id="land-area" type="number" placeholder="ex: 150" v-model.number="form.landArea"
+                                class="border border-gray-400 p-2 rounded-xl w-[492px]" />
+                            <div v-if="errors.landArea" class="text-red-500 text-xs">{{ errors.landArea }}</div>
+                        </div>
+                        <div class="field">
+                            <label for="building-area" class="text-gray-400">Luas Bangunan (m2)</label>
+                            <input id="building-area" type="number" placeholder="ex: 110" v-model.number="form.buildingArea"
+                                class="border border-gray-400 p-2 rounded-xl w-[492px]" />
+                            <div v-if="errors.buildingArea" class="text-red-500 text-xs">{{ errors.buildingArea }}</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 mt-4">
+                        <div class="field">
+                            <p for="floors" class="text-gray-400">Jumlah Lantai</p>
+                            <input id="floors" type="number" placeholder="ex: 2" v-model.number="form.floors"
+                                class="border border-gray-400 p-2 rounded-xl w-[492px]" />
+                            <div v-if="errors.floors" class="text-red-500 text-xs">{{ errors.floors }}</div>
+                        </div>
+                        <div class="field">
+                            <label for="electrical-power" class="text-gray-400">Kekuatan Listrik (watt)</label>
+                            <input id="electrical-power" type="number" placeholder="ex: 1800"
+                                v-model.number="form.electricalPower"
+                                class="border border-gray-400 p-2 rounded-xl w-[492px]" />
+                            <div v-if="errors.electricalPower" class="text-red-500 text-xs">{{ errors.electricalPower }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 mt-4">
+                        <div class="field">
+                            <label for="certificate-select" class="text-gray-400">Sertifikat</label>
+                            <select id="certificate-select" v-model="form.certificate"
+                                class="border border-gray-400 p-2 rounded-xl w-[492px]">
+                                <option disabled value="">Pilih Jenis Sertifikat</option>
+                                <option v-for="certificate in certificates" :key="certificate.value"
+                                    :value="certificate.value">
+                                    {{ certificate.label }}
+                                </option>
+                            </select>
+                            <div v-if="errors.certificate" class="text-red-500 text-xs">{{ errors.certificate }}</div>
+                        </div>
+                        <div class="field">
+                            <label for="property-condition" class="text-gray-400">Kondisi Properti</label>
+                            <select id="property-condition" v-model="form.propertyCondition"
+                                class="border border-gray-400 p-2 rounded-xl w-[492px]">
+                                <option disabled value="">Pilih Kondisi Properti</option>
+                                <option v-for="condition in propertyConditions" :key="condition.value"
+                                    :value="condition.value">
+                                    {{ condition.label }}
+                                </option>
+                            </select>
+                            <div v-if="errors.propertyCondition" class="text-red-500 text-xs">{{ errors.propertyCondition }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fasilitas Section -->
+                    <h1 class="text-[32px] font-bold mt-6">Fasilitas</h1>
+                    <div class="flex gap-4">
+                        <div class="field">
+                            <label for="rooms" class="text-gray-400">Jumlah Kamar</label>
+                            <input id="rooms" type="number" placeholder="ex: 5" v-model.number="form.numberOfRooms"
+                                class="border border-gray-400 p-2 rounded-xl w-[492px]" />
+                            <div v-if="errors.numberOfRooms" class="text-red-500 text-xs">{{ errors.numberOfRooms }}</div>
+                        </div>
+                        <div class="field">
+                            <label for="bathrooms" class="text-gray-400">Jumlah Kamar Mandi</label>
+                            <input id="bathrooms" type="number" placeholder="ex: 4" v-model.number="form.numberOfBathrooms"
+                                class="border border-gray-400 p-2 rounded-xl w-[492px]" />
+                            <div v-if="errors.numberOfBathrooms" class="text-red-500 text-xs">{{ errors.numberOfBathrooms }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 mt-4">
+                        <div class="field">
+                            <label for="garages" class="text-gray-400">Kapasitas Garasi</label>
+                            <input id="garages" type="number" placeholder="ex: 2" v-model.number="form.numberOfGarages"
+                                class="border border-gray-400 p-2 rounded-xl w-[492px]" />
+                            <div v-if="errors.numberOfGarages" class="text-red-500 text-xs">{{ errors.numberOfGarages }}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="carports" class="text-gray-400">Jumlah Carport</label>
+                            <input id="carports" type="number" placeholder="ex: 1" v-model.number="form.numberOfCarports"
+                                class="border border-gray-400 p-2 rounded-xl w-[492px]" />
+                            <div v-if="errors.numberOfCarports" class="text-red-500 text-xs">{{ errors.numberOfCarports }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-gray-400">Fasilitas yang tersedia</p>
+                        <div class="grid grid-cols-3 gap-1">
+                            <label v-for="facility in facilities" :key="facility.value" class="text-[18px]">
+                                <input type="checkbox" :value="facility.value" v-model="form.selectedFacilities" />
+                                {{ facility.label }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Estimation Card -->
+                <div class="w-[411px] ml-[150px]">
+                    <div class="bg-[#F3F3F3] px-4 py-6 rounded-md">
+                        <h1 class="text-[24px] text-center font-medium">Estimasi Harga</h1>
+                        <div class="bg-white rounded-md mt-3 p-2">
+                            <h1 class="text-center font-bold text-[32px] text-[#24A29F]">
+                                Rp. {{ priceEstimate }}
+                            </h1>
+                            <p class="text-center text-[12px]">
+                                Estimation Error <span class="text-red-500">{{ errorPercent }}%</span>
+                            </p>
+                        </div>
+                        <p class="text-center font-bold mt-4">Range Estimasi</p>
+                        <div class="bg-[#FFFFFF] rounded-md p-2 mt-2">
+                            <p class="text-center font-bold text-[#24A29F] text-[18px]">
+                                Rp. {{ priceRange.min }} - Rp. {{ priceRange.max }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <button type="submit" class="btn btn-blue bg-[#24A29F] text-white rounded-md p-3 mt-10"
+                            :disabled="isLoading">
+                            {{ isLoading ? "Estimating..." : "Estimate" }}
+                        </button>
+                        <button type="button" @click="handleOpen"
+                            class="btn btn-blue text-[#24A29F] border-[#24A29F] border-[2px] rounded-md p-3 mt-4">
+                            Simpan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- Modal Component -->
+        <SaveModal :isOpen="isOpen" :handleOpen="handleOpen" :is_completed="is_completed" />
+    </div>
+</template>
   
-  const form = reactive({
+<script setup>
+import { reactive, ref, computed } from 'vue';
+import city_to_district from '../data/city_to_districts';
+import district_lat_long from '../data/district_lat_long';
+import SaveModal from '../components/SaveModal.vue';
+import { estimate } from '../api/api'
+
+
+const form = reactive({
     city: '',
     district: '',
     landArea: null,
@@ -245,59 +194,59 @@
     numberOfGarages: null,
     numberOfCarports: null,
     selectedFacilities: []
-  });
-  
-  // Reactive errors object
-  const errors = reactive({});
-  
-  // Options for selects and checkboxes
-  const cities = Object.keys(city_to_district).map(
+});
+
+// Reactive errors object
+const errors = reactive({});
+
+// Options for selects and checkboxes
+const cities = Object.keys(city_to_district).map(
     (city) => city.charAt(0).toUpperCase() + city.slice(1)
-  );
-  const certificates = [
+);
+const certificates = [
     { label: 'SHM', value: 'SHM' },
     { label: 'SHGB', value: 'SHGB' },
     { label: 'SHP', value: 'SHP' },
     { label: 'Lainnya', value: 'Lainnya' }
-  ];
-  const propertyConditions = [
+];
+const propertyConditions = [
     { label: 'Butuh Renovasi', value: 1 },
     { label: 'Sudah Renovasi', value: 2 },
     { label: 'Baru', value: 3 },
     { label: 'Bagus', value: 4 },
     { label: 'Bagus Sekali', value: 5 }
-  ];
-  const facilities = [
+];
+const facilities = [
     { label: 'Kolam Renang', value: 'Kolam Renang' },
     { label: 'Keamanan', value: 'Keamanan' },
     { label: 'Tempat Jemuran', value: 'Tempat Jemuran' },
     { label: 'Taman', value: 'Taman' },
     { label: 'Akses Parkir', value: 'Akses Parkir' }
-  ];
-  
-  const districts = computed(() => {
+];
+
+const districts = computed(() => {
     if (!form.city) return [];
     const key = form.city.toLowerCase();
     return city_to_district[key] || [];
-  });
-  
-  const isLoading = ref(false);
-  const priceEstimate = ref(0);
-  const errorPercent = ref(0);
-  const priceRange = reactive({ min: 0, max: 0 });
-  
-  // Modal state
-  const isOpen = ref(false);
-  const is_completed = ref(false);
-  const handleOpen = () => {
+});
+
+const isLoading = ref(false);
+const priceEstimate = ref(0);
+const errorPercent = ref(0);
+const priceRange = reactive({ min: 0, max: 0 });
+
+// Modal state
+const isOpen = ref(false);
+const is_completed = ref(false);
+const handleOpen = () => {
     isOpen.value = !isOpen.value;
-  };
-  
-  // Validate form inputs
-  function validateForm() {
+};
+
+// Validate form inputs
+function validateForm() {
     // Clear previous errors
     Object.keys(errors).forEach(key => delete errors[key]);
-  
+
     if (!form.city) errors.city = 'Kota harus dipilih.';
     if (!form.district) errors.district = 'Distrik harus dipilih.';
     if (!form.landArea || form.landArea <= 0) errors.landArea = 'Luas tanah harus lebih dari 0.';
@@ -310,111 +259,105 @@
     if (!form.numberOfBathrooms || form.numberOfBathrooms <= 0) errors.numberOfBathrooms = 'Jumlah kamar mandi harus lebih dari 0.';
     if (!form.numberOfGarages || form.numberOfGarages <= 0) errors.numberOfGarages = 'Jumlah garasi harus lebih dari 0.';
     if (!form.numberOfCarports || form.numberOfCarports <= 0) errors.numberOfCarports = 'Jumlah carport harus lebih dari 0.';
-  
+
     return Object.keys(errors).length === 0;
-  }
-  
-  async function handleSubmit() {
+}
+
+async function handleSubmit() {
     if (!validateForm()) {
-      console.log('Validation failed:', errors);
-      return;
+        console.log('Validation failed:', errors);
+        return;
     }
-  
+
     const data = {
-      city: form.city.toLowerCase(),
-      latitude: district_lat_long[form.district]?.lat || 0,
-      longitude: district_lat_long[form.district]?.long || 0,
-      land_size: Number(form.landArea),
-      building_size: Number(form.buildingArea),
-      floors: Number(form.floors),
-      electricity: Number(form.electricalPower),
-      certificate: form.certificate,
-      property_condition: Number(form.propertyCondition),
-      bedrooms: Number(form.numberOfRooms),
-      bathrooms: Number(form.numberOfBathrooms),
-      swimming_pool: form.selectedFacilities.includes("Kolam Renang") ? 1 : 0,
-      garage: Number(form.numberOfGarages),
-      carport: Number(form.numberOfCarports),
-      garden: form.selectedFacilities.includes("Taman") ? 1 : 0,
-      drying_area: form.selectedFacilities.includes("Tempat Jemuran") ? 1 : 0,
-      security: form.selectedFacilities.includes("Keamanan") ? 1 : 0,
-      parking_access: form.selectedFacilities.includes("Akses Parkir") ? 1 : 0
+        city: form.city.toLowerCase(),
+        latitude: district_lat_long[form.district]?.lat || 0,
+        longitude: district_lat_long[form.district]?.long || 0,
+        land_size: Number(form.landArea),
+        building_size: Number(form.buildingArea),
+        floors: Number(form.floors),
+        electricity: Number(form.electricalPower),
+        certificate: form.certificate,
+        property_condition: Number(form.propertyCondition),
+        bedrooms: Number(form.numberOfRooms),
+        bathrooms: Number(form.numberOfBathrooms),
+        swimming_pool: form.selectedFacilities.includes("Kolam Renang") ? true : false,
+        garage: Number(form.numberOfGarages),
+        carport: Number(form.numberOfCarports),
+        garden: form.selectedFacilities.includes("Taman") ? true : false,
+        drying_area: form.selectedFacilities.includes("Tempat Jemuran") ? true : false,
+        security: form.selectedFacilities.includes("Keamanan") ? true : false,
+        parking_access: form.selectedFacilities.includes("Akses Parkir") ? true : false
     };
-  
+
     try {
-      isLoading.value = true;
-      const response = await axios.post(
-        api + "/api/v1/predict",
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        }
-      );
-      priceEstimate.value = response.data.priceEstimate;
-      errorPercent.value = response.data.errorPercent;
-      priceRange.min = response.data.priceRange.min;
-      priceRange.max = response.data.priceRange.max;
-      console.log(response.data);
+        isLoading.value = true;
+        const response = await estimate(
+            data
+        );
+        priceEstimate.value = response.data.priceEstimate;
+        errorPercent.value = response.data.errorPercent;
+        priceRange.min = response.data.priceRange.min;
+        priceRange.max = response.data.priceRange.max;
+        console.log(response.data);
     } catch (error) {
-      console.error("API call failed:", error);
+        console.error("API call failed:", error);
     } finally {
-      isLoading.value = false;
+        isLoading.value = false;
     }
-  }
+}
 
-  function handleSubmitHistory() {
+function handleSubmitHistory() {
     const data = {
-      city: form.city.toLowerCase(),
-      latitude: district_lat_long[form.district]?.lat || 0,
-      longitude: district_lat_long[form.district]?.long || 0,
-      land_size: Number(form.landArea),
-      building_size: Number(form.buildingArea),
-      floors: Number(form.floors),
-      electricity: Number(form.electricalPower),
-      certificate: form.certificate,
-      property_condition: Number(form.propertyCondition),
-      bedrooms: Number(form.numberOfRooms),
-      bathrooms: Number(form.numberOfBathrooms),
-      swimming_pool: form.selectedFacilities.includes("Kolam Renang") ? 1 : 0,
-      garage: Number(form.numberOfGarages),
-      carport: Number(form.numberOfCarports),
-      garden: form.selectedFacilities.includes("Taman") ? 1 : 0,
-      drying_area: form.selectedFacilities.includes("Tempat Jemuran") ? 1 : 0,
-      security: form.selectedFacilities.includes("Keamanan") ? 1 : 0,
-      parking_access: form.selectedFacilities.includes("Akses Parkir") ? 1 : 0
+        city: form.city.toLowerCase(),
+        latitude: district_lat_long[form.district]?.lat || 0,
+        longitude: district_lat_long[form.district]?.long || 0,
+        land_size: Number(form.landArea),
+        building_size: Number(form.buildingArea),
+        floors: Number(form.floors),
+        electricity: Number(form.electricalPower),
+        certificate: form.certificate,
+        property_condition: Number(form.propertyCondition),
+        bedrooms: Number(form.numberOfRooms),
+        bathrooms: Number(form.numberOfBathrooms),
+        swimming_pool: form.selectedFacilities.includes("Kolam Renang") ? 1 : 0,
+        garage: Number(form.numberOfGarages),
+        carport: Number(form.numberOfCarports),
+        garden: form.selectedFacilities.includes("Taman") ? 1 : 0,
+        drying_area: form.selectedFacilities.includes("Tempat Jemuran") ? 1 : 0,
+        security: form.selectedFacilities.includes("Keamanan") ? 1 : 0,
+        parking_access: form.selectedFacilities.includes("Akses Parkir") ? 1 : 0
     };
 
     if (!validateForm()) {
-      console.log('Validation failed:', errors);
-      return;
+        console.log('Validation failed:', errors);
+        return;
     }
-  }
-  </script>
+}
+</script>
   
-  <style scoped>
-  label {
+<style scoped>
+label {
     margin-bottom: 0.3rem;
-  }
-  
-  h1 {
+}
+
+h1 {
     margin-bottom: 0.5rem;
-  }
-  
-  .flex {
+}
+
+.flex {
     display: flex;
     margin-bottom: 20px;
-  }
-  
-  .text-red-500 {
-    color: #f56565;
-  }
+}
 
-  .field {
+.text-red-500 {
+    color: #f56565;
+}
+
+.field {
     display: flex;
     flex-direction: column;
     margin-bottom: 1rem;
-  }
-  </style>
+}
+</style>
   
