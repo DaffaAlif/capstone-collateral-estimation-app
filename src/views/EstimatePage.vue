@@ -344,10 +344,9 @@
     try {
       isLoading.value = true;
       const response = await axios.post(
-        import.meta.env.VITE_API_URL + "/api/v1/predict",
+        api + "/api/v1/predict",
         data,
         {
-          withCredentials: true,
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
