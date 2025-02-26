@@ -24,13 +24,13 @@ const routes = [
     path: "/estimate",
     name: "Estimate",
     component: EstimatePage,
-    meta: { requiresAuth: false },
+    meta: { requiresAuth: true },
   },
   {
     path: "/faq",
     name: "Faq",
     component: Faq,
-    meta: { requiresAuth: false },
+    meta: { requiresAuth: true },
   },
   {
     path: "/dashboard",
@@ -46,20 +46,35 @@ const router = createRouter({
 });
 
 // Global Navigation Guard
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+  const isAuthenticated = store.getters.isAuthenticated;
+
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    const isAuthenticated = store.getters.isAuthenticated;
+    // If route requires authentication
     if (!isAuthenticated) {
       next({
         path: "/login",
         query: { redirect: to.fullPath },
       });
     } else {
-      next();
+      // Verify token with API before proceeding
+      const isValid = await store.dispatch("checkAuth");
+      if (!isValid) {
+        next({
+          path: "/login",
+          query: { redirect: to.fullPath },
+        });
+      } else {
+        next();
+      }
     }
+  } else if (to.path === "/login" && isAuthenticated) {
+    // If the user is authenticated, prevent access to the login page
+    next({ path: "/dashboard" }); // Redirect to dashboard or another page
   } else {
     next();
   }
 });
+
 
 export default router;

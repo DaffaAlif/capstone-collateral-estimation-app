@@ -1,7 +1,7 @@
 <template>
     <div>
         <header :class="headerClass">
-            <div class="px-4 xl:mr-12">
+            <div class="xl:mr-12">
                 <router-link to="/" :class="['header-logo']">
                     <img src="../../assets/logo.png" alt="logo" width="40" height="20" class=" w-24 h-12" />
                 </router-link>
@@ -9,7 +9,7 @@
 
             <div class="flex items-center justify-end pr-16 lg:pr-0 w-full">   <Accordion />
                 <nav id="navbarCollapse" :class="[
-                    'navbar absolute right-0 z-30 w-[250px] rounded bg-white px-6 py-4 duration-300  lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100',
+                    'navbar absolute right-0 z-30 w-[250px] rounded bg-white px-6 py-4 duration-300  lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 ',
                     navbarOpen ? 'visibility top-full opacity-100' : 'invisible top-[120%] opacity-0'
                 ]">
                     <ul class="block lg:flex lg:space-x-12 py-5">
@@ -50,10 +50,10 @@
 
                 </div>
                 <div class="mx-4">
-                    <router-link to="/login"
+                    <button @click="handleLogOut" 
                     class="hidden py-3 text-base font-medium text-dark hover:opacity-70 md:block">
                         <ArrowRightEndOnRectangleIcon class="h-7 font-light" />
-                </router-link>
+                    </button>
                 </div>
                 
             </div>
@@ -65,7 +65,14 @@
 import { ArrowRightEndOnRectangleIcon } from "@heroicons/vue/24/outline";
 import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
+import store from "../../store";
+import router from "../../router";
 
+const handleLogOut = async () => {
+    console.log('logout');
+    await store.dispatch('logout');
+    router.push({ name: 'Login' })
+}
 // Define props using defineProps
 const props = defineProps({
     sticky: {
@@ -96,6 +103,7 @@ const headerClass = computed(() => [
     "items-center",
     "col-12",
     "shadow-lg",
+    "px-44",
     props.sticky
         ? " fixed z-[9999] bg-white !bg-opacity-80 shadow-sticky backdrop-blur-sm transition"
         : " fixed z-[9999] bg-white !bg-opacity-90 shadow-sticky backdrop-blur-sm transition",

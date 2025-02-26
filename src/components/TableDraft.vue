@@ -3,26 +3,46 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import store from '../store'
 import { ArrowRightIcon } from '@heroicons/vue/24/outline'
-import { PencilIcon } from '@heroicons/vue/24/solid'
+import { ChevronLeftIcon, ChevronRightIcon, PencilIcon } from '@heroicons/vue/24/solid'
 import { TrashIcon } from '@heroicons/vue/24/solid'
+import { fetchDrafts } from '../api/api'
 
 const drafts = ref([
   
 ])
+const totalDrafts = ref(0)
+const currentPage = ref(1)
+
 
 const getDrafts = async() => {
   try {
-    const response = await axios.get('http://localhost:5000/api/v1/history', {
-      headers: {
-        Authorization: `Bearer ${store.state.token}`
-      }
-    })
-    drafts.value = response.data.data
+    const response = await fetchDrafts(currentPage.value)
+    drafts.value = response.data.data.histories
+    totalDrafts.value = response.data.data.total_data
 
     console.log(response.data.data);
   } catch (error) {
     console.error(error);
   }
+}
+
+const nextPage = () => {
+  if (currentPage.value < Math.ceil(totalDrafts.value / 5)) {
+    currentPage.value++
+    getDrafts()
+  }
+}
+
+const prevPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--
+    getDrafts()
+  }
+}
+
+const choosePage = (page) => {
+  currentPage.value = page
+  getDrafts()
 }
 
 onMounted(() => {
@@ -32,10 +52,11 @@ onMounted(() => {
 
 <template>
 
+<div>
   <div class="flex justify-between gap-4 w-full pt-6 font-inter">
-    <div class="flex flex-col justify-between w-80 gap-4 p-5 border rounded-sm border-neutral-400">
+    <div class="flex flex-col justify-between w-80 gap-4 p-5 border rounded-sm border-neutral-400 min-h-64">
       <div class="">
-        <h3 class="text-4xl font-semibold text-teal-500">Draft</h3>
+        <h3 class="text-4xl font-semibold text-teal-500 ">Draft</h3>
       <p class="text-lg">Lanjutkan proses estimasi dan simpan hasil estimasi untuk referensi di kemudian hari.</p>
       </div>
       <div class="flex justify-end align-self-end mb-0">
@@ -44,7 +65,15 @@ onMounted(() => {
         </button>
       </div>
     </div>
-    <div class="flex-1">
+    <div v-if="drafts.length === 0" class="flex-1 border flex rounded-sm border-neutral-400 min-h-64">
+        <div class="flex flex-col items-center justify-center mx-auto my-auto gap-4">
+          <img src="../assets/note-add.svg" alt="note" width="40" height="20" class=" w-24 h-20" />
+          <p class="text-center text-xl">Lakukan estimasi dan lihat 
+            <br>
+            Draft disini</p>
+        </div>
+      </div>
+    <div v-else class="flex-1">
       <table class="w-full rounded-3xl">
     <tr class=" h-12 bg-teal-500 text-left rounded-3xl text-white">
       <th class="px-4">No</th>
@@ -52,7 +81,7 @@ onMounted(() => {
       <th >Nama</th>
     </tr> 
     <tr class="h-10 border-b border-b-neutral-400" v-for="(draft, index) in drafts">
-      <td class="px-4">{{ index + 1 }}</td>
+      <td class="px-4">{{ ((currentPage - 1)  * 5 ) +index + 1 }}</td>
       <td>{{ new Date(draft.updated_at).toLocaleDateString() }}</td>
       <td>
         <div class="flex items-center gap-2">
@@ -62,7 +91,7 @@ onMounted(() => {
               <PencilIcon class="w-6 h-6 text-neutral-400" />
             </button>
             <button >
-              <TrashIcon class="w-6 h-6 text-neutral-400" />  
+              <img src="../assets/trash.svg" alt="trash" width="40" height="20" class=" w-6 h-5" />
             </button>
           </div>
         </div>
@@ -74,6 +103,18 @@ onMounted(() => {
   </table>
     </div>
   </div>
+  <div v-if="drafts.length > 0" class="flex justify-end my-6">
+    <button @click="prevPage">
+      <ChevronLeftIcon class=" h-6 w-6 text-neutral-400" />
+    </button>
+    <button @click="choosePage(i)" class="py-1 px-2.5 rounded" :class="currentPage === i ? 'bg-teal-500 text-white' : ''" v-for="i in Math.ceil(totalDrafts / 5)">
+      <p>{{ i }}</p>
+    </button>
+    <button @click="nextPage">
+      <ChevronRightIcon class=" h-6 w-6 text-neutral-400" />
+    </button>
+  </div>
+</div>
 </template>
 
 <style scoped>

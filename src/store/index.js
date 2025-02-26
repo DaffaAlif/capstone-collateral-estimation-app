@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { createStore } from 'vuex'
+import { fetchToken, postLogin } from '../api/api'
 
 export default createStore({
   state: {
@@ -8,6 +9,7 @@ export default createStore({
   },
   getters: {
     isAuthenticated(state) {
+      // Check if the token valid
       return !!state.token
     },
     currentUser(state) {
@@ -27,6 +29,9 @@ export default createStore({
     LOGOUT(state) {
       state.user = null
       state.token = null
+      localStorage.removeItem('user')
+      localStorage.removeItem('token')
+      console.log(localStorage.getItem('token'))
     }
   },
   actions: {
@@ -37,7 +42,7 @@ export default createStore({
       //   commit('SET_USER', response.data.user)
       //   commit('SET_TOKEN', response.data.token)
       // })
-      return axios.post('192.168.22.0:3000/api/v1/auth/login', credentials).then(response => {
+      return postLogin(credentials).then(response => {
         commit('SET_USER', response.data.data)
         commit('SET_TOKEN', response.data.data.token)
       }).catch(error => {
@@ -47,8 +52,26 @@ export default createStore({
 
     logout({ commit }) {
       commit('LOGOUT')
-    }
+
+    },
+    async checkAuth({ commit, state }) {
+      if (!state.token) {
+        commit('LOGOUT')
+        return false
+      }
+  
+      try {
+        const response = await fetchToken();
+        commit('SET_USER', response.data.data) // Update user info if valid
+        return true
+      } catch (error) {
+        console.error('Token invalid:', error)
+        commit('LOGOUT') // If the token is invalid, log the user out
+        return false
+      }
+    },
   },
+  
   modules: {
     // Add additional modules if needed
   }
