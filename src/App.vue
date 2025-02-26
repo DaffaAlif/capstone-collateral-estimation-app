@@ -10,7 +10,6 @@
 
 <script setup>
 import Navbar from './components/SharedComponents/Navbar.vue';
-import {ref} from 'vue'
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
