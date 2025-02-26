@@ -26,7 +26,7 @@ const toggleAccordion = () => {
 
         <!-- Accordion Content -->
         <div v-if="isOpen" class="p-4 bg-white border-t border-gray-300">
-            <p class="text-gray-700">
+            <p class="text-gray-700 text-[24px]">
                 {{ message }}
             </p>
         </div>
