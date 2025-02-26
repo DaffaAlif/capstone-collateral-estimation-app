@@ -161,30 +161,31 @@
 
                 <!-- Card -->
                 <div class="w-[411px] ml-[150px]">
-                    <div class="bg-[#F3F3F3] px-4 py-2 rounded-md">
-                        <h1 class="text-[24px] text-center">Estimasi Harga</h1>
+                    <div class="bg-[#F3F3F3] px-4 py-6 rounded-md">
+                        <h1 class="text-[24px] text-center font-medium">Estimasi Harga</h1>
                         <div class="bg-white rounded-md mt-3 p-2">
                             <h1 class="text-center font-bold text-[32px] text-[#24A29F]">Rp 1.500.000.000</h1>
                             <p class="text-center text-[12px]">
                                 Estimation Error <span class="text-red-500">19%</span>
                             </p>
                         </div>
-                        <p class="text-center font-bold">Range Estimasi</p>
-                        <div class="bg-[#DDDDDD] rounded-md p-2 mt-2">
-                            <p class="text-center font-bold">Rp. 100.000 - Rp. 100.000</p>
+                        <p class="text-center font-bold mt-4">Range Estimasi</p>
+                        <div class="bg-[#FFFFFF] rounded-md p-2 mt-2">
+                            <p class="text-center font-bold text-[#24A29F] text-[18px]">Rp. 100.000 - Rp. 100.000</p>
                         </div>
                     </div>
                     <div class="flex flex-col">
-                        <button @click="isOpen = true" class="btn btn-blue bg-[#24A29F] text-white rounded-md p-3 mt-10">
+                        <button type="submit" class="btn btn-blue bg-[#24A29F] text-white rounded-md p-3 mt-10">
                             Estimate
                         </button>
-                        <button class="btn btn-blue text-[#24A29F] border-[#24A29F] border-[2px] rounded-md p-3">
+                        <button  @click="isOpen = true" class="btn btn-blue text-[#24A29F] border-[#24A29F] border-[2px] rounded-md p-3">
                             Simpan
                         </button>
                     </div>
                 </div>
             </div>
         </form>
+        <SaveModal :isOpen="isOpen" :handleOpen="handleOpen"/>
     </div>
 </template>
   
@@ -193,6 +194,12 @@ import { ref, computed } from 'vue'
 import city_to_district from '../data/city_to_districts'
 import district_lat_long from '../data/district_lat_long'
 import SaveModal from '../components/SaveModal.vue';
+
+
+const isOpen = ref(false)
+const handleOpen = () => {
+    isOpen.value = !isOpen.value
+}
 
 const selectedCity = ref('')
 const selectedDistrict = ref('')
@@ -329,13 +336,13 @@ function handleSubmit() {
     property_condition: Number(propertyCondition.value),
     bedrooms: Number(numberOfRooms.value),
     bathrooms: Number(numberOfBathrooms.value),
-    swimming_pool: selectedFacilities.value.includes("Kolam Renang") ? 1 : 0,
+    swimming_pool: selectedFacilities.value.includes("Kolam Renang") ? true : false,
     garage: Number(numberOfGarages.value),
     carport: Number(numberOfCarports.value),
-    garden: selectedFacilities.value.includes("Taman") ? 1 : 0,
-    drying_area: selectedFacilities.value.includes("Tempat Jemuran") ? 1 : 0,
-    security: selectedFacilities.value.includes("Keamanan") ? 1 : 0,
-    parking_access: selectedFacilities.value.includes("Akses Parkir") ? 1 : 0
+    garden: selectedFacilities.value.includes("Taman") ? true : false,
+    drying_area: selectedFacilities.value.includes("Tempat Jemuran") ? true : false,
+    security: selectedFacilities.value.includes("Keamanan") ? true : false,
+    parking_access: selectedFacilities.value.includes("Akses Parkir") ? true : false
   }
 
   console.log("Submitted Form Data:", formData)
@@ -345,6 +352,10 @@ function handleSubmit() {
 <style scoped>
 label {
     margin-bottom: 0.3rem;
+}
+
+h1 {
+    margin-bottom: 0.5rem;
 }
 
 .flex {

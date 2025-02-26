@@ -1,16 +1,16 @@
 <template>
     <!-- Button to Open Popup -->
     <!-- Pop-up Form (Modal) -->
-    <div v-if="isOpen" class="fixed inset-0 bg-gray-100 bg-opacity-25 flex items-center justify-center z-50">
+    <div v-if="isOpen" class="fixed inset-0 bg-[rgb(0,0,0)]/50 flex items-center justify-center z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg w-96 relative">
 
             <!-- Close Button -->
-            <button @click="isOpen = false" class="absolute top-2 right-2 text-gray-600 hover:text-red-500">
+            <button @click="handleOpen" class="absolute top-2 right-2 text-gray-600 hover:text-red-500">
                 &times;
             </button>
 
             <!-- Form Title -->
-            <h2 class="text-xl font-semibold mb-4">Contact Us</h2>
+            <h2 class="text-xl font-semibold mb-4 text-center">Save</h2>
 
             <!-- Form Fields -->
             <form @submit.prevent="handleSubmit">
@@ -18,7 +18,6 @@
                     <label class="block text-sm font-medium text-gray-700">Name</label>
                     <input v-model="name" type="text" class="w-full p-2 border border-gray-300 rounded mt-1" required>
                 </div>
-
 
                 <!-- Submit Button -->
                 <button type="submit" class="bg-teal-500 text-white px-6 py-2 rounded-md w-full mt-3">
@@ -32,7 +31,8 @@
 <script setup>
 import { ref } from 'vue'
 const props = defineProps({
-    isOpen: Boolean
+    isOpen: Boolean,
+   handleOpen : Function
 })
 
 // Form Data
