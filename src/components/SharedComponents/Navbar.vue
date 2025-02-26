@@ -3,13 +3,13 @@
         <header :class="headerClass">
             <div class="px-4 xl:mr-12">
                 <router-link to="/" :class="['header-logo']">
-                    <img src="../../assets/logo.png" alt="logo" width="40" height="20" class="w-full" />
+                    <img src="../../assets/logo.png" alt="logo" width="40" height="20" class=" w-24 h-12" />
                 </router-link>
             </div>
 
             <div class="flex items-center justify-end pr-16 lg:pr-0 w-full">   <Accordion />
                 <nav id="navbarCollapse" :class="[
-                    'navbar absolute right-0 z-30 w-[250px] rounded border-[.5px] border-body-color/50 bg-white px-6 py-4 duration-300 dark:border-body-color/20 dark:bg-dark lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100',
+                    'navbar absolute right-0 z-30 w-[250px] rounded bg-white px-6 py-4 duration-300  lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100',
                     navbarOpen ? 'visibility top-full opacity-100' : 'invisible top-[120%] opacity-0'
                 ]">
                     <ul class="block lg:flex lg:space-x-12">
@@ -48,16 +48,21 @@
                         </li>
                     </ul>
                 </nav>
-                <router-link to="/signin"
-                    class="hidden px-7 py-3 text-base font-medium text-dark hover:opacity-70  md:block">
-                    Sign In
+                
+                <div class="">
+                    <router-link to="/login"
+                    class="hidden py-3 text-base font-medium text-dark hover:opacity-70 md:block">
+                        <ArrowRightEndOnRectangleIcon class="w-12 h-7" />
                 </router-link>
+                </div>
+                
             </div>
         </header>
     </div>
 </template>
   
 <script setup>
+import { ArrowRightEndOnRectangleIcon } from "@heroicons/vue/24/outline";
 import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
 
@@ -73,7 +78,7 @@ const props = defineProps({
 const navbarOpen = ref(false);
 const openIndex = ref(null);
 const menuData = ref([
-    { path: "/", title: "History" },
+    { path: "/dashboard", title: "Home" },
     { path: "/estimate", title: "Form" },
 
 ]);
@@ -89,9 +94,10 @@ const headerClass = computed(() => [
     "w-full",
     "items-center",
     "col-12",
+    "shadow-lg",
     props.sticky
-        ? "dark:bg-gray-dark dark:shadow-sticky-dark fixed z-[9999] bg-white !bg-opacity-80 shadow-sticky backdrop-blur-sm transition"
-        : "bg-transparent border-b-2",
+        ? " fixed z-[9999] bg-white !bg-opacity-80 shadow-sticky backdrop-blur-sm transition"
+        : " fixed z-[9999] bg-white !bg-opacity-90 shadow-sticky backdrop-blur-sm transition",
 ]);
 
 // Methods
