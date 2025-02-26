@@ -4,9 +4,6 @@ FROM node:latest as builder
 WORKDIR /usr/src/app
 ENV PATH /usr/src/node_modules/.bin:$PATH
 
-ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
-
 COPY package.json ./
 
 RUN npm install
