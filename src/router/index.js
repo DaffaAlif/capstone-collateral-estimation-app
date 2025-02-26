@@ -6,8 +6,15 @@ import Dashboard from "../views/Dashboard.vue";
 import store from "../store";
 import EstimatePage from "../views/EstimatePage.vue";
 import Faq from "../views/Faq.vue";
+import NotFound from "../views/NotFound.vue";
 
 const routes = [
+  {
+    path: "/",
+    name: "Home",
+    component: Login,
+    meta: { requiresAuth: false },
+  },
   {
     path: "/login",
     name: "Login",
@@ -30,7 +37,12 @@ const routes = [
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
-    meta: { requiresAuth: false },
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/:pathMatch(.*)*", // Catch-all route for 404
+    name: "NotFound",
+    component: NotFound,
   },
 ];
 

@@ -50,7 +50,7 @@
 
                 </div>
                 <div class="mx-4">
-                    <button @click="handleLogOut" 
+                    <button @click="handleOpen" 
                     class="hidden py-3 text-base font-medium text-dark hover:opacity-70 md:block">
                         <ArrowRightEndOnRectangleIcon class="h-7 font-light" />
                     </button>
@@ -79,6 +79,7 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    handleOpen: Function,
 });
 
 
