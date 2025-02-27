@@ -1,12 +1,14 @@
 <template>
     <div class="px-4 md:px-8 lg:px-43 py-10">
         <form @submit.prevent="handleSubmit">
-            <h1 class="text-3xl md:text-4xl lg:text-5xl font-semibold text-teal-500 ">
+            <h1 v-if="!edition" class="text-3xl md:text-4xl lg:text-5xl font-semibold text-teal-500 ">
                 Estimasi Properti
+            </h1>
+            <h1 v-if="edition" class="text-3xl md:text-4xl lg:text-5xl font-semibold text-teal-500 ">
+                {{ estimationName.name }} - Edit
             </h1>
             <div class="h-1 w-full bg-teal-500 my-4"></div>
 
-            <!-- Responsive container: stack on small screens, side-by-side on md+ -->
             <div class="flex flex-col md:flex-row gap-6">
                 <!-- Left Column: Form Fields -->
                 <div class="w-full md:w-2/3">
@@ -19,7 +21,7 @@
                                 class="border border-gray-400 p-2 rounded-xl w-full">
                                 <option disabled value="">Pilih Kota</option>
                                 <option v-for="city in cities" :key="city" :value="city">
-                                    {{ city }}
+                                    {{ capitalizeSentence(city) }}
                                 </option>
                             </select>
                             <div v-if="errors.city" class="text-red-500 text-xs">{{ errors.city }}</div>
@@ -30,7 +32,7 @@
                                 class="border border-gray-400 p-2 rounded-xl w-full">
                                 <option disabled value="">Pilih Distrik</option>
                                 <option v-for="district in districts" :key="district" :value="district">
-                                    {{ district }}
+                                    {{ capitalizeSentence(district) }}
                                 </option>
                             </select>
                             <div v-if="errors.district" class="text-red-500 text-xs">{{ errors.district }}</div>
@@ -179,9 +181,18 @@
                     </div>
                     <div class="flex flex-col mt-6">
                         <button type="submit"
-                            class="bg-[#24A29F] text-white rounded-md p-3 mt-6 hover:bg-teal-600 transition"
+                            class="bg-[#24A29F] text-white rounded-md  hover:bg-teal-600 transition"
                             :disabled="isLoading">
-                            {{ isLoading ? "Estimating..." : "Estimate" }}
+                            <div class="flex items-center justify-center gap-4 mt-4">
+
+                                <p>Estimate</p>
+                                <svg width="15" height="14" viewBox="0 0 15 14" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg" :class="isLoading ? 'hidden' : 'block'">
+                                    <path d="M1.5 7H14M14 7L8 1M14 7L8 13" stroke="white" stroke-width="1.8"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <ArrowPathIcon class="w-6 h-6 animate-spin" v-if="isLoading" />
+                            </div>
                         </button>
                         <button type="button" @click="handleOpen"
                             class="text-[#24A29F] border border-[#24A29F] rounded-md p-3 mt-4 hover:bg-[#24A29F] hover:text-white transition">
@@ -208,17 +219,20 @@ import district_lat_long from '../data/district_lat_long';
 import SaveModal from '../components/SaveModal.vue';
 import { estimate } from '../api/api'
 import { updateHistory } from '../api/api';
-import formatRupiah from '../script/formatrupiah';
 import { postHistory } from '../api/api';
+import formatRupiah from '../script/formatrupiah';
+import capitalizeSentence from '../script/formatCapitalizeEachLetter';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import AlertPopup from '../components/SharedComponents/AlertPopup.vue';
+
+import {ArrowPathIcon} from '@heroicons/vue/24/outline'
+
+
 const router = useRouter();
-
 const route = useRoute();
+
 const edition = ref(false);
-
-
 // Access Vuex store
 const store = useStore();
 
@@ -245,8 +259,8 @@ const form = reactive({
 const defaultForm = reactive({ ...form });
 
 function clearForm() {
-  // Copies all defaultForm fields back into form
-  Object.assign(form, defaultForm);
+    // Copies all defaultForm fields back into form
+    Object.assign(form, defaultForm);
 }
 
 

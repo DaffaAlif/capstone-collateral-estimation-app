@@ -19,16 +19,27 @@ const AccordionData = ref([{
     message: "Smart Collateral adalah aplikasi internal PT Bank Syariah Indonesia (BSI) yang dapat digunakan oleh Karyawan Marketing SME BSI untuk membantu proses perhitungan nilai aset agunan"
 },
 {
+    title: "Apa penjelasan dari setiap field pada form estimasi?",
+    message: `1. Kota: Kota letak properti berada \n
+2. Distrik: Kecamatan atau wilayah administratif yang lebih kecil dalam kota\n
+3. Luas Tanah: Luas tanah dari properti dalam satuan meter persegi\n
+4. Luas Bangunan: Luas bangunan properti dalam satuan meter persegi\n
+5. Jumlah Lantai: Jumlah tingkat properti\n
+6. Kekuatan Listrik: Daya listrik yang tersedia dalam properti dalam satuan watt\n
+7. Jenis Sertifikat: Jenis sertifikat kepemilikan properti, seperti SHM (Sertifikat Hak Milik) atau HGB (Hak Guna Bangunan) atau SHP (Sertifikat Hak Pakai) atau Lainnya.\n
+8. Kondisi Properti: Kondisi rumah saat ini, dengan tingkatan secara berurutan Bagus Sekali, Bagus, Baru, Sudah Renovasi, dan Butuh Renovasi\n
+9. Jumlah Kamar: Jumlah kamar tidur dalam properti (termasuk kamar tidur pembantu)\n
+10. Jumlah Kamar Mandi: Jumlah kamar mandi dalam properti (termasuk kamar mandi pembantu)\n
+11. Kapasitas Garasi: Kapasitas kendaraan pada garasi\n
+12. Kapasitas Carport: Kapasitas kendaraan pada carport\n`
+}, {
     title: "Bagaimana cara kerja aplikasi ini dalam menghitung nilai aset?",
     message: "Aplikasi ini menghitung nilai aset menggunakan model pembelajaran mesin dengan algoritma XGBoost dengan data training yang diambil pada akhir tahun 2022. Dalam penggunaannya, model akan melakukan perhitungan dengan parameter bersumber dari masukan pengguna"
 }, {
     title: "Apakah hasil estimasi yang diberikan 100% akurat?",
-    message: "Hasil estimasi yang diberikan tidak 100% akurat, karena memiliki rasio error. Dalam versi ini, estimasi memiliki rasio error sekitar 19%. Untuk membantu memperkirakan, aplikasi ini akan menampilkan batas bawah dan batas atas harga."
-}, {
-    title: "Apakah input yang telah dikerjakan tetapi belum selesai dapat disimpan sebagai draft ?",
     message: "Aplikasi ini menghitung nilai aset menggunakan model pembelajaran mesin dengan algoritma XGBoost dengan data training yang diambil pada akhir tahun 2022. Dalam penggunaannya, model akan melakukan perhitungan dengan parameter bersumber dari masukan pengguna"
 }, {
-    title: "Apakah data yang telah di-estimasikan bisa di-edit lagi?",
+    title: "Apakah input yang telah dikerjakan tetapi belum selesai dapat disimpan sebagai draft ?",
     message: "Pengguna dapat mengedit perhitungan yang telah dilakukan dengan menekan ikon pensil pada laman history"
 }, {
     title: "Jika saya mendapatkan error atau gagal ketika memasukkan data, bagaimana cara mengatasinya?",
