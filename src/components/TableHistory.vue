@@ -137,13 +137,13 @@ onMounted( async () => {
   </div>
   <div v-if="histories.length > 0" class="flex justify-end max-w-[1216px] mx-auto my-6">
     <button @click="prevPage">
-      <ChevronLeftIcon class=" h-6 w-6 text-neutral-400" />
+      <ChevronLeftIcon class=" h-6 w-6 text-neutral-400 cursor-pointer" />
     </button>
-    <button @click="choosePage(i)" class="py-1 px-2.5 rounded" :class="props.currentPageHistory === i ? 'bg-teal-500 text-white' : ''" v-for="i in Math.ceil(totalhistories / 5)">
+    <button @click="choosePage(i)" class="py-1 px-2.5 rounded cursor-pointer" :class="props.currentPageHistory === i ? 'bg-teal-500 text-white' : ''" v-for="i in Math.ceil(totalhistories / 5)">
       <p>{{ i }}</p>
     </button>
     <button @click="nextPage">
-      <ChevronRightIcon class=" h-6 w-6 text-neutral-400" />
+      <ChevronRightIcon class=" h-6 w-6 text-neutral-400 cursor-pointer" />
     </button>
   </div>
 </div>

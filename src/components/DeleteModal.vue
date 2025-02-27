@@ -39,7 +39,13 @@ const props = defineProps({
     handleOpen: Function,
     history: Object,
     getDrafts: Function,
-    getHistories: Function
+    getHistories: Function,
+    totalHistories: Number,
+    totalDrafts: Number,
+    setCurrentPageHistory: Function,
+    setCurrentPageDraft: Function,
+    currentPageHistory: Number,
+    currentPageDraft: Number
 })
 
 
@@ -48,6 +54,17 @@ const showPopup = ref(false);
 
 const handleSubmit = async () => {
     try {
+        if (props.history.is_completed) {
+            if(props.totalHistories%5 === 1){
+                props.setCurrentPageHistory(props.currentPageHistory - 1)
+            }
+        }
+        if (!props.history.is_completed) {
+            if(props.totalDrafts%5 === 1){
+                props.setCurrentPageDraft(props.currentPageDraft - 1)
+            }
+        }
+
         await deleteHistory(props.history.id);
         
         props.handleOpen(); // Close the modal
