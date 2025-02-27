@@ -72,7 +72,7 @@ onMounted(() => {
       <th class="max-w-[270px]">Tanggal</th>
       <th class="w-[270px]">Nama</th>
       <th class="max-w-[270px]"> Kota</th>
-      <th class="max-w-[400px]"> Estimasi </th>
+      <th class="w-[400px]"> Estimasi </th>
     </tr> 
     <tr class="h-10 border-b border-b-neutral-400" v-for="(history, index) in histories">
       <td class="px-4">{{ ((props.currentPageHistory - 1)  * 5 ) +index + 1 }}</td>
@@ -82,12 +82,12 @@ onMounted(() => {
       <td>
         <div class="flex items-center gap-2">
           <p class="flex-1">Rp {{  history.price_in_rp.toLocaleString('id-ID') }}</p>
-          <div class="flex gap-2 items-center py-2 w-16">
+          <div class="flex gap-2 items-center py-2 ">
             <button @click="handleEdit(history)">
-              <PencilIcon class="w-6 h-6 text-neutral-400" />
+              <PencilIcon class="w-6 h-6 text-neutral-400 mx-3" />
             </button>
             <button @click="handleOpen(history)">
-              <img src="../assets/trash.svg" alt="trash" width="40" height="20" class=" w-6 h-[22px]" />
+              <img src="../assets/trash.svg" alt="trash" width="40" height="20" class=" w-6 h-[22px] mx-3" />
             </button>
           </div>
         </div>
