@@ -5,6 +5,7 @@ import DeleteModal from '../components/DeleteModal.vue';
 import TableDraft from '../components/TableDraft.vue';
 import TableHistory from '../components/TableHistory.vue';
 import { fetchDrafts, fetchHistories } from '../api/api';
+import AlertPopup from '../components/SharedComponents/AlertPopup.vue';
 
 const histories = ref([
   
@@ -63,10 +64,6 @@ const setCurrentPageHistory = (page) => {
 }
 
 
-onMounted(() => {
-  getDrafts()
-  getHistories()
-})
 
 </script>
 <template>
@@ -85,6 +82,7 @@ onMounted(() => {
         </div>
     </div>
     <DeleteModal :isOpen="isOpen" :handleOpen="handleOpen" :history="history" :getDrafts="getDrafts" :getHistories="getHistories"/>
+    
 </template>
 
 

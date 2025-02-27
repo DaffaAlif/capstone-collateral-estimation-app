@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import store from '../store'
 import { ArrowRightIcon } from '@heroicons/vue/24/outline'
-import { ChevronLeftIcon, ChevronRightIcon, PencilIcon } from '@heroicons/vue/24/solid'
+import { ArrowPathIcon, ChevronLeftIcon, ChevronRightIcon, PencilIcon } from '@heroicons/vue/24/solid'
 import { TrashIcon } from '@heroicons/vue/24/solid'
 import { fetchDrafts } from '../api/api'
 import router from '../router'
@@ -16,29 +16,57 @@ const props = defineProps({
   currentPageDraft: Number,
   setCurrentPageDraft: Function
 })
-
+const isLoading = ref(false)
 
 
 
 
 
 const nextPage = () => {
-  if (props.currentPageDraft < Math.ceil(props.totalDrafts / 5)) {
+  isLoading.value = false
+  try {
+    if (props.currentPageDraft < Math.ceil(props.totalDrafts / 5)) {
     props.setCurrentPageDraft(props.currentPageDraft + 1)
     props.getDrafts()
   }
+  } catch (error) {
+   console.error(error) 
+  } finally{
+    isLoading.value = false
+  }
+
 }
 
 const prevPage = () => {
-  if (props.currentPageDraft > 1) {
+  isLoading.value = false
+  try {
+    if (props.currentPageDraft > 1) {
     props.setCurrentPageDraft(props.currentPageDraft - 1)
     props.getDrafts()
   }
+  } catch (error) {
+   console.error(error) 
+  } finally{
+    isLoading.value = false
+  }
+
 }
 
 const choosePage = (page) => {
-  props.setCurrentPageDraft(page)
-  props.getDrafts()
+  const choosePage = async (page) => {
+  isLoading.value = false
+  try {
+    props.setCurrentPageDraft(page)
+    props.getDrafts()
+  
+  } catch (error) {
+   console.error(error) 
+  } finally{
+    isLoading.value = false
+  }
+
+}
+
 }
 
 const handleEdit = (history) => {
@@ -46,6 +74,18 @@ const handleEdit = (history) => {
   console.log(store.state.history);
   router.push({ name: 'Estimate' , query: { edit: true } })
 }
+
+onMounted( async () => {
+  try {
+    isLoading.value = true
+    await props.getDrafts()
+   
+  } catch (error) {
+    
+  } finally{
+    isLoading.value = false
+  }
+})
 
 </script>
 
@@ -64,7 +104,12 @@ const handleEdit = (history) => {
         </button>
       </div>
     </div>
-    <div v-if="drafts.length === 0" class="border flex rounded-sm border-neutral-400 min-h-64 w-[880px]">
+    <div v-if="isLoading" class="border flex rounded-sm border-neutral-400 min-h-64 w-[880px]">
+      <div class="flex flex-col items-center justify-center mx-auto my-auto gap-4">
+          <ArrowPathIcon class="w-20 h-20 animate-spin text-neutral-500"></ArrowPathIcon>
+        </div>
+      </div>
+    <div v-else-if="drafts.length === 0" class="border flex rounded-sm border-neutral-400 min-h-64 w-[880px]">
         <div class="flex flex-col items-center justify-center mx-auto my-auto gap-4">
           <img src="../assets/note-search.svg" alt="note" width="40" height="20" class=" w-24 h-20" />
           <p class="text-center text-xl">Lakukan estimasi dan lihat 

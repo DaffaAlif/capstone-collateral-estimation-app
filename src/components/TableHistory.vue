@@ -4,7 +4,7 @@ import axios from 'axios'
 import store from '../store'
 import { ArrowRightIcon } from '@heroicons/vue/24/outline'
 
-import { ChevronLeftIcon, ChevronRightIcon, PencilIcon } from '@heroicons/vue/24/solid'
+import { ArrowPathIcon, ChevronLeftIcon, ChevronRightIcon, PencilIcon } from '@heroicons/vue/24/solid'
 import { TrashIcon } from '@heroicons/vue/24/solid'
 import { fetchHistories } from '../api/api'
 import router from '../router'
@@ -24,30 +24,61 @@ const handleEdit = (history) => {
   router.push({ name: 'Estimate' , query: { edit: true } })
 }
 
+const isLoading = ref(false)
 
 
-
-const nextPage = () => {
+const nextPage = async () => {
+  isLoading.value = false
+try {
   if (props.currentPageHistory < Math.ceil(props.totalhistories / 5)) {
     props.setCurrentPageHistory(props.currentPageHistory + 1)
-    props.getHistories()
+    await props.getHistories()
   }
+} catch (error) {
+  console.error(error);
+} finally{
+  isLoading.value = false
+}
 }
 
-const prevPage = () => {
-  if (props.currentPageHistory > 1) {
+const prevPage = async () => {
+  isLoading.value = false
+  try {
+    if (props.currentPageHistory > 1) {
     props.setCurrentPageHistory(props.currentPageHistory - 1)
-    props.getHistories()
+    await props.getHistories()
+  }
+  } catch (error) {
+   console.error(error) 
+  } finally{
+    isLoading.value = false
   }
 }
 
-const choosePage = (page) => {
-  props.setCurrentPageHistory(page)
-  props.getHistories()
+const choosePage = async (page) => {
+  isLoading.value = false
+  try {
+    props.setCurrentPageHistory(page)
+    await props.getHistories()
+  
+  } catch (error) {
+   console.error(error) 
+  } finally{
+    isLoading.value = false
+  }
+
 }
 
-onMounted(() => {
-  props.getHistories()
+onMounted( async () => {
+  try {
+    isLoading.value = true
+    await props.getHistories()
+   
+  } catch (error) {
+    
+  } finally{
+    isLoading.value = false
+  }
 })
 </script>
 
@@ -58,7 +89,12 @@ onMounted(() => {
    
     <div class="flex-1">
       <h3 class="text-3xl font-semibold my-4">History</h3>
-      <div v-if="histories.length === 0" class="flex-1 border flex rounded-sm border-neutral-400 min-h-64">
+      <div v-if="isLoading" class="flex-1 border flex rounded-sm border-neutral-400 min-h-64">
+        <div class="flex flex-col items-center justify-center mx-auto my-auto gap-4">
+          <ArrowPathIcon class="w-20 h-20 animate-spin text-neutral-500"></ArrowPathIcon>
+        </div>
+      </div>
+      <div v-else-if="histories.length === 0" class="flex-1 border flex rounded-sm border-neutral-400 min-h-64">
         <div class="flex flex-col items-center justify-center mx-auto my-auto gap-4">
           <img src="../assets/note-search.svg" alt="note" width="40" height="20" class=" w-24 h-20" />
           <p class="text-center text-xl">Lakukan estimasi dan lihat 

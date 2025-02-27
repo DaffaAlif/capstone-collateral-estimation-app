@@ -27,11 +27,13 @@
             </form>
         </div>
     </div>
+    <AlertPopup :show="showPopup" :message="history.is_completed ? 'Hasil estimasi berhasil dihapus' : 'Draft estimasi berhasil dihapus'" :autoHide="true" :duration="4000" />
 </template>
   
 <script setup>
 import { h, ref } from 'vue'
 import { deleteHistory } from '../api/api';
+import AlertPopup from './SharedComponents/AlertPopup.vue';
 const props = defineProps({
     isOpen: Boolean,
     handleOpen: Function,
@@ -41,15 +43,17 @@ const props = defineProps({
 })
 
 
-
+const showPopup = ref(false);
 
 
 const handleSubmit = async () => {
     try {
         await deleteHistory(props.history.id);
+        
         props.handleOpen(); // Close the modal
         props.getDrafts();  // Refresh drafts
         props.getHistories();
+        
     } catch (error) {
         console.error(error);
     }
