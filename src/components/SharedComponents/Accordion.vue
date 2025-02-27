@@ -5,7 +5,7 @@ const props = defineProps({
 })
 import { ref } from 'vue';
 
-const isOpen = ref(true);
+const isOpen = ref(false);
 
 const toggleAccordion = () => {
     isOpen.value = !isOpen.value;

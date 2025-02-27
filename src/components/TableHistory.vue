@@ -60,7 +60,7 @@ onMounted(() => {
       <h3 class="text-3xl font-semibold my-4">History</h3>
       <div v-if="histories.length === 0" class="flex-1 border flex rounded-sm border-neutral-400 min-h-64">
         <div class="flex flex-col items-center justify-center mx-auto my-auto gap-4">
-          <img src="../assets/note-add.svg" alt="note" width="40" height="20" class=" w-24 h-20" />
+          <img src="../assets/note-search.svg" alt="note" width="40" height="20" class=" w-24 h-20" />
           <p class="text-center text-xl">Lakukan estimasi dan lihat 
             <br>
             History disini</p>
@@ -69,25 +69,25 @@ onMounted(() => {
       <table class="w-full rounded-3xl" v-else>
     <tr class=" h-12 bg-teal-500 text-left rounded-3xl text-white">
       <th class="max-w-[125px] px-4">No</th>
-      <th class="max-w-[270px]">Tanggal</th>
-      <th class="w-[270px]">Nama</th>
-      <th class="max-w-[270px]"> Kota</th>
-      <th class="w-[400px]"> Estimasi </th>
+      <th class="max-w-[270px] px-2">Tanggal</th>
+      <th class="w-[270px] px-2">Nama</th>
+      <th class="max-w-[270px] px-2"> Kota</th>
+      <th class="w-[400px] px-2"> Estimasi </th>
     </tr> 
     <tr class="h-10 border-b border-b-neutral-400" v-for="(history, index) in histories">
       <td class="px-4">{{ ((props.currentPageHistory - 1)  * 5 ) +index + 1 }}</td>
-      <td>{{ new Date(history.updated_at).toLocaleDateString() }}</td>
-      <td>{{ history.name }}</td>
-      <td>{{ history.city }}</td>
+      <td class="px-2">{{ new Date(history.updated_at).toLocaleDateString() }}</td>
+      <td class="px-2">{{ history.name }}</td>
+      <td class="px-2">{{ history.city.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') }}</td>
       <td>
         <div class="flex items-center gap-2">
           <p class="flex-1">Rp {{  history.price_in_rp.toLocaleString('id-ID') }}</p>
-          <div class="flex gap-2 items-center py-2 ">
+          <div class="flex items-center ">
             <button @click="handleEdit(history)">
-              <PencilIcon class="w-6 h-6 text-neutral-400 mx-3" />
+              <PencilIcon class="w-6 h-6 text-neutral-400 mx-4 cursor-pointer" />
             </button>
             <button @click="handleOpen(history)">
-              <img src="../assets/trash.svg" alt="trash" width="40" height="20" class=" w-6 h-[22px] mx-3" />
+              <img src="../assets/trash.svg" alt="trash" class=" w-6 h-[22px] mx-4 cursor-pointer" />
             </button>
           </div>
         </div>

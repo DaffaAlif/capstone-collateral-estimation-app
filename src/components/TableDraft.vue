@@ -66,7 +66,7 @@ const handleEdit = (history) => {
     </div>
     <div v-if="drafts.length === 0" class="border flex rounded-sm border-neutral-400 min-h-64 w-[880px]">
         <div class="flex flex-col items-center justify-center mx-auto my-auto gap-4">
-          <img src="../assets/note-add.svg" alt="note" width="40" height="20" class=" w-24 h-20" />
+          <img src="../assets/note-search.svg" alt="note" width="40" height="20" class=" w-24 h-20" />
           <p class="text-center text-xl">Lakukan estimasi dan lihat 
             <br>
             Draft disini</p>
@@ -76,12 +76,12 @@ const handleEdit = (history) => {
       <table class="w-full rounded-3xl">
     <tr class=" h-12 bg-teal-500 text-left rounded-3xl text-white">
       <th class="max-w-[125px] px-4">No</th>
-      <th class="max-w-[270px]">Tanggal</th>
-      <th >Nama</th>
+      <th class="max-w-[270px] px-2">Tanggal</th>
+      <th class="px-2">Nama</th>
     </tr> 
     <tr class="h-10 border-b border-b-neutral-400" v-for="(draft, index) in drafts">
       <td class="px-4">{{ ((currentPageDraft - 1)  * 5 ) +index + 1 }}</td>
-      <td>{{ new Date(draft.updated_at).toLocaleDateString() }}</td>
+      <td class="px-2">{{ new Date(draft.updated_at).toLocaleDateString() }}</td>
       <td>
         <div class="flex items-center gap-2">
           <p class="flex-1">{{ draft.name }}</p>

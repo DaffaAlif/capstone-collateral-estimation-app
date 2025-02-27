@@ -2,7 +2,7 @@
     <div>
         <header :class="headerClass">
             <div class="xl:mr-12">
-                <router-link to="/" :class="['header-logo']">
+                <router-link to="/dashboard" :class="['header-logo']">
                     <img src="../../assets/logo.png" alt="logo" width="40" height="20" class="w-24 h-12" />
                 </router-link>
             </div>
