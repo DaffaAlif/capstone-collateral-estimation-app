@@ -27,7 +27,7 @@
             </form>
         </div>
     </div>
-    <AlertPopup :show="showPopup" :message="history.is_completed ? 'Hasil estimasi berhasil dihapus' : 'Draft estimasi berhasil dihapus'" :autoHide="true" :duration="4000" />
+
 </template>
   
 <script setup>
