@@ -54,7 +54,7 @@ onMounted(() => {
 <template>
 
 <div>
-  <div class="flex justify-between gap-4 w-full font-inter">
+  <div class="flex justify-between gap-4 max-w-[1216px] mx-auto font-inter">
    
     <div class="flex-1">
       <h3 class="text-3xl font-semibold my-4">History</h3>
@@ -68,11 +68,11 @@ onMounted(() => {
       </div>
       <table class="w-full rounded-3xl" v-else>
     <tr class=" h-12 bg-teal-500 text-left rounded-3xl text-white">
-      <th class="px-4">No</th>
-      <th>Tanggal</th>
-      <th >Nama</th>
-      <th> Kota</th>
-      <th> Estimasi </th>
+      <th class="max-w-[125px] px-4">No</th>
+      <th class="max-w-[270px]">Tanggal</th>
+      <th class="w-[270px]">Nama</th>
+      <th class="max-w-[270px]"> Kota</th>
+      <th class="max-w-[400px]"> Estimasi </th>
     </tr> 
     <tr class="h-10 border-b border-b-neutral-400" v-for="(history, index) in histories">
       <td class="px-4">{{ ((props.currentPageHistory - 1)  * 5 ) +index + 1 }}</td>
@@ -99,7 +99,7 @@ onMounted(() => {
   </table>
     </div>
   </div>
-  <div v-if="histories.length > 0" class="flex justify-end my-6">
+  <div v-if="histories.length > 0" class="flex justify-end max-w-[1216px] mx-auto my-6">
     <button @click="prevPage">
       <ChevronLeftIcon class=" h-6 w-6 text-neutral-400" />
     </button>
