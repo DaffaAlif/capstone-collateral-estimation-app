@@ -132,10 +132,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-4">
+                    <div class="mt-4 w-2/3">
                         <p class="text-gray-400">Fasilitas yang tersedia</p>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
-                            <label v-for="facility in facilities" :key="facility.value" class="text-lg flex items-center">
+                        <div class="grid grid-cols-2 sm:grid-cols-3 mt-2">
+                            <label v-for="facility in facilities" :key="facility.value" class="text-[18px] flex items-center">
                                 <input type="checkbox" :value="facility.value" v-model="form.selectedFacilities"
                                     class="mr-2" />
                                 {{ facility.label }}
@@ -149,7 +149,7 @@
                     <div class="bg-[#F3F3F3] px-4 py-6 rounded-md shadow-md">
                         <h1 class="text-xl text-center font-medium">Estimasi Harga</h1>
                         <div class="bg-white rounded-md mt-3 p-2 min-h-[96px] shadow">
-                            <h1 class="text-center font-bold text-3xl text-[#24A29F]">
+                            <h1 class="text-center font-bold text-3xl text-[#24A29F] mt-4">
                                 {{ priceEstimate ? formatRupiah(priceEstimate) : '' }}
                             </h1>
                             <div class="flex items-center justify-center mt-2">
@@ -164,8 +164,9 @@
                                             d="M13 16h-1v-4h-1m1-4h.01M12 20c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z" />
                                     </svg>
                                     <div
-                                        class="absolute left-1/2 transform -translate-x-1/2 bottom-8 w-56 bg-gray-800 text-white text-sm p-2 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                                        The estimation error is based on market fluctuations and data analysis.
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-8 w-56  shadow-2xl bg-white border text-sm p-2 rounded-md  opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                    <p class="font-medium">Estimation Error</p>
+                                        Rata-rata persentase kesalahan prediksi dibanding dengan nilai sebenarnya.
                                     </div>
                                 </div>
                             </div>
@@ -185,7 +186,7 @@
                             :disabled="isLoading">
                             <div class="flex items-center justify-center gap-4 mt-4">
 
-                                <p>Estimate</p>
+                                <p>Estimasi</p>
                                 <svg width="15" height="14" viewBox="0 0 15 14" fill="none"
                                     xmlns="http://www.w3.org/2000/svg" :class="isLoading ? 'hidden' : 'block'">
                                     <path d="M1.5 7H14M14 7L8 1M14 7L8 13" stroke="white" stroke-width="1.8"

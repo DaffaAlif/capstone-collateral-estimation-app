@@ -58,7 +58,7 @@ const AccordionData = ref([{
     message: "Apabila perhitungan tidak sesuai atau terlihat aneh, pastikan kembali data yang Anda masukkan benar dan sesuai panduan pengisian dan coba lakukan perhitungan kembali. Apabila masih sama, hubungi penanggung jawab aplikasi dan Anda dapat melakukan perhitungan secara manual untuk sementara waktu."
 }, {
     title: "Bagaimana cara membaca hasil perhitungan nilai aset?",
-    message: "erhitungan nilai aset dibaca dengan melihat estimasi harga yang muncul beriringan dengan mempertimbangkan range estimasi yang dihasilkan."
+    message: "Perhitungan nilai aset dibaca dengan melihat estimasi harga yang muncul beriringan dengan mempertimbangkan range estimasi yang dihasilkan."
 },])
 
 
