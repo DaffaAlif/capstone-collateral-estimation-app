@@ -15,6 +15,11 @@ const props = defineProps({
   totalhistories: Number
 })
 
+const handleEdit = (history) => {
+  store.dispatch('setHistory', history)
+  console.log(store.state.history);
+  router.push({ name: 'Estimate' })
+}
 
 
 const currentPage = ref(1)
@@ -76,7 +81,7 @@ onMounted(() => {
         <div class="flex items-center gap-2">
           <p class="flex-1">Rp {{  history.price_in_rp.toLocaleString('id-ID') }}</p>
           <div class="flex gap-2 items-center py-2 w-16">
-            <button >
+            <button @click="handleEdit(history)">
               <PencilIcon class="w-6 h-6 text-neutral-400" />
             </button>
             <button @click="handleOpen(history)">

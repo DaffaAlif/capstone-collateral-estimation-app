@@ -90,7 +90,7 @@ const toggleHidden = () => {
       </div>
       <span class="text-red-500" v-if="errors.password">{{ errors.password }}</span>
     </div>
-   <button class="bg-teal-500 w-full py-4 rounded-xl text-white font-semibold text-lg flex items-center justify-center gap-2 mt-8 cursor-pointer" type="submit">
+   <button class="bg-teal-500 hover:bg-teal-400 w-full py-4 rounded-xl text-white font-semibold text-lg flex items-center justify-center gap-2 mt-8 cursor-pointer" type="submit">
     <p>Login</p>
       <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg" :class="isLoading ? 'hidden' : 'block'">
         <path d="M1.5 7H14M14 7L8 1M14 7L8 13" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
