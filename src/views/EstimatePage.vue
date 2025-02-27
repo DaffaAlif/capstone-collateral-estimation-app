@@ -20,7 +20,7 @@
                         </div>
                         <div class="field">
                             <label for="district-select" class="text-gray-400">Distrik</label>
-                            <select id="district-select" v-model="form.district" :disabled="!form.city"
+                            <select id="district-select" v-model="form.district"
                                 class="border border-gray-400 p-2 rounded-xl w-[492px]">
                                 <option disabled value="">Pilih Distrik</option>
                                 <option v-for="district in districts" :key="district" :value="district">
@@ -58,7 +58,7 @@
                             <label for="electrical-power" class="text-gray-400">Kekuatan Listrik (watt)</label>
                             <input id="electrical-power" type="number" placeholder="ex: 1800"
                                 v-model.number="form.electricalPower"
-                                class="border border-gray-400 p-2 rounded-xl w-[492px]" />
+                                class="border border-gray-400 p-2 rounded-xl w-[31rem]" />
                             <div v-if="errors.electricalPower" class="text-red-500 text-xs">{{ errors.electricalPower }}
                             </div>
                         </div>
@@ -143,15 +143,33 @@
                             <h1 class="text-center font-bold text-[32px] text-[#24A29F] ">
                                 {{ priceEstimate ? formatRupiah(priceEstimate) : '' }}
                             </h1>
-                            <p v-if="priceEstimate" class="text-center text-[16px]">
+                            <div class="flex justify-center">
+                                <p v-if="priceEstimate" class="text-center text-[16px]">
                                 Estimation Error <span class="text-red-500">19%</span>
+                           
                             </p>
+                            <div class="relative group ml-2 mt-[2px]">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="w-5 h-5 text-gray-500 cursor-pointer group-hover:text-gray-700 transition"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13 16h-1v-4h-1m1-4h.01M12 20c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z" />
+                                </svg>
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 bottom-8 w-56 bg-gray-800 text-white text-sm p-2 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                    The estimation error is based on market fluctuations and data analysis.
+                                </div>
+                            </div>
+
+                            </div>
+                           
                         </div>
                         <p class="text-center font-medium mt-4">Range Estimasi</p>
                         <div class="bg-[#FFFFFF] rounded-md p-2 mt-2 min-h-[40px]">
                             <p class="text-center font-bold text-[#24A29F] text-[18px]">
                                 {{ priceEstimate ? formatRupiah(priceEstimate - priceEstimate * 0.19) : '' }}
-                                {{ !priceEstimate ? ' ' : '-' }} {{ priceEstimate ? formatRupiah(priceEstimate + priceEstimate
+                               <span class="text-black">{{ !priceEstimate ? ' ' : 's/d' }}</span>  {{ priceEstimate ? formatRupiah(priceEstimate +
+                                    priceEstimate
                                     * 0.19) : ''
                                 }}
                             </p>
@@ -172,23 +190,36 @@
         </form>
         <!-- Modal Component -->
         <SaveModal :isOpen="isOpen" :handleOpen="handleOpen" :is_completed="is_completed"
-            :handleSubmitHistory="handleSubmitHistory" />
+            :handleSubmitHistory="handleSubmitHistory" @estimationName="updateEstimationName" />
     </div>
 </template>
+
+
   
 <script setup>
-import { reactive, ref, computed, onBeforeUnmount, onMounted } from 'vue';
+import { reactive, ref, computed, onBeforeUnmount, onMounted, watchEffect } from 'vue';
 import city_to_district from '../data/city_to_districts';
 import district_lat_long from '../data/district_lat_long';
 import SaveModal from '../components/SaveModal.vue';
 import { estimate } from '../api/api'
+import { updateHistory } from '../api/api';
 import formatRupiah from '../script/formatrupiah';
 import { postHistory } from '../api/api';
+import { useStore } from 'vuex';
+import { useRoute, useRouter } from 'vue-router';
+const router = useRouter();
+
+const route = useRoute();
+const edition = ref(false);
 
 
+// Access Vuex store
+const store = useStore();
 
+// Check if `history` exists in the store
+const history = computed(() => store.state.history || {});
 
-
+// Define form with default values
 const form = reactive({
     city: '',
     district: '',
@@ -205,14 +236,68 @@ const form = reactive({
     selectedFacilities: []
 });
 
-
-// Reactive errors object
-const errors = reactive({});
-
-// Options for selects and checkboxes
 const cities = Object.keys(city_to_district).map(
     (city) => city.charAt(0).toUpperCase() + city.slice(1)
 );
+
+const districts = computed(() => {
+    if (!form.city) return [];
+    const key = form.city.toLowerCase().trim();
+    return city_to_district[key] || [];
+});
+
+// Modal state
+const isOpen = ref(false);
+const is_completed = ref(false);
+const handleOpen = () => {
+    isOpen.value = !isOpen.value;
+};
+const estimationName = reactive({ id: "", name: "" })
+
+const updateEstimationName = (value) => {
+    estimationName.name = value;
+};
+
+function showSuccessPopup(message) {
+    alert(message);
+}
+
+watchEffect(() => {
+    if (history.value && Object.keys(history.value).length > 0) {
+
+        edition.value = route.query.edit || null;
+
+        form.city = cities.find(city => city.toLowerCase() === history.value.city.toLowerCase()) || '';
+        form.district = history.value.district || '';
+        form.landArea = history.value.land_size ?? form.landArea;
+        form.buildingArea = history.value.building_size ?? form.buildingArea;
+        form.floors = history.value.floors ?? form.floors;
+        form.electricalPower = history.value.electricity ?? form.electricalPower;
+        form.certificate = history.value.certificate || form.certificate;
+        form.propertyCondition = history.value.property_condition ?? form.propertyCondition;
+        form.numberOfRooms = history.value.bedrooms ?? form.numberOfRooms;
+        form.numberOfBathrooms = history.value.bathrooms ?? form.numberOfBathrooms;
+        form.numberOfGarages = history.value.garage ?? form.numberOfGarages;
+        form.numberOfCarports = history.value.carport ?? form.numberOfCarports;
+
+        estimationName.name = history.value.name || "";
+        estimationName.id = history.value.id || "";
+
+
+        form.selectedFacilities = [];
+        if (history.value.swimming_pool) form.selectedFacilities.push("Kolam Renang");
+        if (history.value.security) form.selectedFacilities.push("Keamanan");
+        if (history.value.drying_area) form.selectedFacilities.push("Tempat Jemuran");
+        if (history.value.garden) form.selectedFacilities.push("Taman");
+        if (history.value.parking_access) form.selectedFacilities.push("Akses Parkir");
+    }
+});
+
+console.log(edition.value)
+
+
+const errors = reactive({});
+
 const certificates = [
     { label: 'SHM', value: 'SHM' },
     { label: 'SHGB', value: 'SHGB' },
@@ -234,11 +319,6 @@ const facilities = [
     { label: 'Akses Parkir', value: 'Akses Parkir' }
 ];
 
-const districts = computed(() => {
-    if (!form.city) return [];
-    const key = form.city.toLowerCase();
-    return city_to_district[key] || [];
-});
 
 const isLoading = ref(false);
 const priceEstimate = ref(0);
@@ -266,16 +346,6 @@ onBeforeUnmount(() => {
 });
 
 
-// Modal state
-const isOpen = ref(false);
-const is_completed = ref(false);
-const handleOpen = () => {
-    isOpen.value = !isOpen.value;
-};
-
-function showSuccessPopup(message) {
-    alert(message);
-}
 
 function clearForm() {
     document.querySelectorAll("input, select").forEach(field => {
@@ -298,11 +368,10 @@ function validateForm() {
     if (!form.electricalPower || form.electricalPower <= 0) errors.electricalPower = 'Kekuatan listrik harus lebih dari 0.';
     if (!form.certificate) errors.certificate = 'Jenis sertifikat harus dipilih.';
     if (!form.propertyCondition) errors.propertyCondition = 'Kondisi properti harus dipilih.';
-    if (!form.numberOfRooms || form.numberOfRooms <= 0) errors.numberOfRooms = 'Jumlah kamar harus lebih dari 0.';
-    if (!form.numberOfBathrooms || form.numberOfBathrooms <= 0) errors.numberOfBathrooms = 'Jumlah kamar mandi harus lebih dari 0.';
-    if (!form.numberOfGarages || form.numberOfGarages < 0) errors.numberOfGarages = 'Jumlah garasi harus lebih dari 0.';
-    if (!form.numberOfCarports || form.numberOfCarports < 0) errors.numberOfCarports = 'Jumlah carport harus lebih dari 0.';
-
+    if (form.numberOfRooms < -1) errors.numberOfRooms = 'Jumlah kamar harus lebih dari atau sama dengan 0.';
+    if (form.numberOfBathrooms < -1) errors.numberOfBathrooms = 'Jumlah kamar mandi harus lebih dari atau sama dengan 0.';
+    if (form.numberOfGarages < -1) errors.numberOfGarages = 'Jumlah garasi harus lebih dari atau sama dengan 0.';
+    if (form.numberOfCarports < -1) errors.numberOfCarports = 'Jumlah carport harus lebih dari atau sama dengan 0.';
     return Object.keys(errors).length === 0;
 }
 
@@ -354,7 +423,7 @@ async function handleSubmit() {
 function handleSubmitHistory() {
 
     const data = {
-        name: 'testing',
+        name: estimationName.name,
         city: form.city.toLowerCase(),
         latitude: district_lat_long[form.district]?.lat || 0,
         longitude: district_lat_long[form.district]?.long || 0,
@@ -377,29 +446,57 @@ function handleSubmitHistory() {
         is_completed: priceEstimate.value ? true : false
     };
 
-    try {
-        isLoading.value = true;
-        postHistory(data)
-            .then(response => {
-                console.log(response.data.data)
-                priceEstimate.value = response.data.data;
-                is_completed.value = true;
-                isOpen.value = false;
-                priceEstimate.value = '';
-                setTimeout(() => {
-                    showSuccessPopup("Data has been successfully saved!");
-                    clearForm();
-                }, 1000);
-            })
-            .catch(error => {
-                console.error("API call failed:", error);
-            })
-            .finally(() => {
-                isLoading.value = false;
-            });
-    } catch (error) {
-        console.error("API call failed:", error);
+    if (!edition.value) {
+        try {
+            isLoading.value = true;
+            postHistory(data)
+                .then(response => {
+                    priceEstimate.value = response.data.data;
+                    is_completed.value = true;
+                    isOpen.value = false;
+                    priceEstimate.value = '';
+                    setTimeout(() => {
+                        showSuccessPopup("Data has been successfully saved!");
+                        clearForm();
+                    }, 1000);
+                })
+                .catch(error => {
+                    console.error("API call failed:", error);
+                })
+                .finally(() => {
+                    isLoading.value = false;
+                });
+        } catch (error) {
+            console.error("API call failed:", error);
+        }
+    } else {
+        try {
+            isLoading.value = true;
+            updateHistory(estimationName.id, data)
+                .then(response => {
+                    priceEstimate.value = response.data.data;
+                    is_completed.value = true;
+                    isOpen.value = false;
+                    priceEstimate.value = '';
+                    store.dispatch('clearHistory');
+                    setTimeout(() => {
+                        showSuccessPopup("Data has been successfully edited!");
+                        clearForm();
+                    }, 1000);
+
+                    router.push('/dashboard');
+                })
+                .catch(error => {
+                    console.error("API call failed:", error);
+                })
+                .finally(() => {
+                    isLoading.value = false;
+                });
+        } catch (error) {
+            console.error("API call failed:", error);
+        }
     }
+
 
 
 }
