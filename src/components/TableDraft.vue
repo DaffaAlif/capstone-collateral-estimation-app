@@ -53,7 +53,6 @@ const prevPage = () => {
 }
 
 const choosePage = (page) => {
-  const choosePage = async (page) => {
   isLoading.value = false
   try {
     props.setCurrentPageDraft(page)
@@ -67,7 +66,7 @@ const choosePage = (page) => {
 
 }
 
-}
+
 
 const handleEdit = (history) => {
   store.dispatch('setHistory', history)
@@ -150,13 +149,13 @@ onMounted( async () => {
   </div>
   <div v-if="drafts.length > 0" class="flex max-w-[1200px]  mx-auto justify-end my-6">
     <button @click="prevPage">
-      <ChevronLeftIcon class=" h-6 w-6 text-neutral-400" />
+      <ChevronLeftIcon class=" h-6 w-6 text-neutral-400 cursor-pointer" />
     </button>
-    <button @click="choosePage(i)" class="py-1 px-2.5 rounded" :class="currentPageDraft === i ? 'bg-teal-500 text-white' : ''" v-for="i in Math.ceil(totalDrafts / 5)">
+    <button @click="choosePage(i)" class="py-1 px-2.5 rounded cursor-pointer" :class="currentPageDraft === i ? 'bg-teal-500 text-white' : ''" v-for="i in Math.ceil(totalDrafts / 5)">
       <p>{{ i }}</p>
     </button>
     <button @click="nextPage">
-      <ChevronRightIcon class=" h-6 w-6 text-neutral-400" />
+      <ChevronRightIcon class=" h-6 w-6 text-neutral-400 cursor-pointer" />
     </button>
   </div>
   

@@ -81,7 +81,7 @@ const setCurrentPageHistory = (page) => {
             </div>
         </div>
     </div>
-    <DeleteModal :isOpen="isOpen" :handleOpen="handleOpen" :history="history" :getDrafts="getDrafts" :getHistories="getHistories"/>
+    <DeleteModal :isOpen="isOpen" :handleOpen="handleOpen" :history="history" :getDrafts="getDrafts" :getHistories="getHistories" :totalDrafts="totalDrafts" :totalHistories="totalhistories" :currentPageHistory="currentPageHistory" :currentPageDraft="currentPageDraft" :setCurrentPageHistory="setCurrentPageHistory" :setCurrentPageDraft="setCurrentPageDraft"/>
     
 </template>
 
