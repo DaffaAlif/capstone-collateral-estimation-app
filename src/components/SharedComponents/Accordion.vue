@@ -13,7 +13,7 @@ const toggleAccordion = () => {
 </script>
 
 <template>
-    <div class="w-full  lg:min-w-[1134px] mx-auto border border-gray-300 rounded-lg shadow-lg">
+    <div class="w-full xl:min-w-[1134px] mx-auto border border-gray-300 rounded-lg shadow-lg">
         <!-- Accordion Header -->
         <button @click="toggleAccordion"
             class="w-full flex justify-between items-center p-4  hover:bg-gray-100 transition-all duration-300 rounded-lg">
