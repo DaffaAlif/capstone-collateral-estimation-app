@@ -1,27 +1,33 @@
 <template>
-    <div class="px-30 py-10">
+    <div class="px-4 md:px-8 lg:px-43 py-10">
         <form @submit.prevent="handleSubmit">
-            <h1 class="text-[48px] font-semibold text-teal-500">Estimasi Properti</h1>
-            <div class="h-[2px] w-full bg-teal-500"></div>
-            <div class="flex mt-10">
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-semibold text-teal-500 text-center">
+                Estimasi Properti
+            </h1>
+            <div class="h-1 w-full bg-teal-500 my-4"></div>
+
+            <!-- Responsive container: stack on small screens, side-by-side on md+ -->
+            <div class="flex flex-col md:flex-row gap-6">
                 <!-- Left Column: Form Fields -->
-                <div class="w-3/5">
+                <div class="w-full md:w-2/3">
                     <!-- Lokasi Section -->
-                    <h1 class="text-[32px] font-medium">Lokasi</h1>
-                    <div class="flex gap-4">
+                    <h1 class="text-2xl font-medium">Lokasi</h1>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <div class="field">
-                            <label for="city-select" class="mr-2 text-gray-400">Kota</label>
+                            <label for="city-select" class="text-gray-400">Kota</label>
                             <select id="city-select" v-model="form.city"
-                                class="border border-gray-400 p-2 rounded-xl w-[492px]">
+                                class="border border-gray-400 p-2 rounded-xl w-full">
                                 <option disabled value="">Pilih Kota</option>
-                                <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
+                                <option v-for="city in cities" :key="city" :value="city">
+                                    {{ city }}
+                                </option>
                             </select>
                             <div v-if="errors.city" class="text-red-500 text-xs">{{ errors.city }}</div>
                         </div>
                         <div class="field">
                             <label for="district-select" class="text-gray-400">Distrik</label>
                             <select id="district-select" v-model="form.district"
-                                class="border border-gray-400 p-2 rounded-xl w-[492px]">
+                                class="border border-gray-400 p-2 rounded-xl w-full">
                                 <option disabled value="">Pilih Distrik</option>
                                 <option v-for="district in districts" :key="district" :value="district">
                                     {{ district }}
@@ -32,42 +38,42 @@
                     </div>
 
                     <!-- Detail Properti Section -->
-                    <h1 class="text-[32px] font-medium mt-6">Detail Properti</h1>
-                    <div class="flex gap-4">
+                    <h1 class="text-2xl font-medium mt-6">Detail Properti</h1>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <div class="field">
                             <label for="land-area" class="text-gray-400">Luas Tanah (m2)</label>
                             <input id="land-area" type="number" placeholder="ex: 150" v-model.number="form.landArea"
-                                class="border border-gray-400 p-2 rounded-xl w-[492px]" />
+                                class="border border-gray-400 p-2 rounded-xl w-full" />
                             <div v-if="errors.landArea" class="text-red-500 text-xs">{{ errors.landArea }}</div>
                         </div>
                         <div class="field">
                             <label for="building-area" class="text-gray-400">Luas Bangunan (m2)</label>
                             <input id="building-area" type="number" placeholder="ex: 110" v-model.number="form.buildingArea"
-                                class="border border-gray-400 p-2 rounded-xl w-[492px]" />
+                                class="border border-gray-400 p-2 rounded-xl w-full" />
                             <div v-if="errors.buildingArea" class="text-red-500 text-xs">{{ errors.buildingArea }}</div>
                         </div>
                     </div>
-                    <div class="flex gap-4 mt-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <div class="field">
-                            <p for="floors" class="text-gray-400">Jumlah Lantai</p>
+                            <label for="floors" class="text-gray-400">Jumlah Lantai</label>
                             <input id="floors" type="number" placeholder="ex: 2" v-model.number="form.floors"
-                                class="border border-gray-400 p-2 rounded-xl w-[492px]" />
+                                class="border border-gray-400 p-2 rounded-xl w-full" />
                             <div v-if="errors.floors" class="text-red-500 text-xs">{{ errors.floors }}</div>
                         </div>
                         <div class="field">
                             <label for="electrical-power" class="text-gray-400">Kekuatan Listrik (watt)</label>
                             <input id="electrical-power" type="number" placeholder="ex: 1800"
                                 v-model.number="form.electricalPower"
-                                class="border border-gray-400 p-2 rounded-xl w-[31rem]" />
+                                class="border border-gray-400 p-2 rounded-xl w-full" />
                             <div v-if="errors.electricalPower" class="text-red-500 text-xs">{{ errors.electricalPower }}
                             </div>
                         </div>
                     </div>
-                    <div class="flex gap-4 mt-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <div class="field">
                             <label for="certificate-select" class="text-gray-400">Sertifikat</label>
                             <select id="certificate-select" v-model="form.certificate"
-                                class="border border-gray-400 p-2 rounded-xl w-[492px]">
+                                class="border border-gray-400 p-2 rounded-xl w-full">
                                 <option disabled value="">Pilih Jenis Sertifikat</option>
                                 <option v-for="certificate in certificates" :key="certificate.value"
                                     :value="certificate.value">
@@ -79,7 +85,7 @@
                         <div class="field">
                             <label for="property-condition" class="text-gray-400">Kondisi Properti</label>
                             <select id="property-condition" v-model="form.propertyCondition"
-                                class="border border-gray-400 p-2 rounded-xl w-[492px]">
+                                class="border border-gray-400 p-2 rounded-xl w-full">
                                 <option disabled value="">Pilih Kondisi Properti</option>
                                 <option v-for="condition in propertyConditions" :key="condition.value"
                                     :value="condition.value">
@@ -92,43 +98,44 @@
                     </div>
 
                     <!-- Fasilitas Section -->
-                    <h1 class="text-[32px] font-medium mt-6">Fasilitas</h1>
-                    <div class="flex gap-4">
+                    <h1 class="text-2xl font-medium mt-6">Fasilitas</h1>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <div class="field">
                             <label for="rooms" class="text-gray-400">Jumlah Kamar</label>
                             <input id="rooms" type="number" placeholder="ex: 5" v-model.number="form.numberOfRooms"
-                                class="border border-gray-400 p-2 rounded-xl w-[492px]" />
+                                class="border border-gray-400 p-2 rounded-xl w-full" />
                             <div v-if="errors.numberOfRooms" class="text-red-500 text-xs">{{ errors.numberOfRooms }}</div>
                         </div>
                         <div class="field">
                             <label for="bathrooms" class="text-gray-400">Jumlah Kamar Mandi</label>
                             <input id="bathrooms" type="number" placeholder="ex: 4" v-model.number="form.numberOfBathrooms"
-                                class="border border-gray-400 p-2 rounded-xl w-[492px]" />
+                                class="border border-gray-400 p-2 rounded-xl w-full" />
                             <div v-if="errors.numberOfBathrooms" class="text-red-500 text-xs">{{ errors.numberOfBathrooms }}
                             </div>
                         </div>
                     </div>
-                    <div class="flex gap-4 mt-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <div class="field">
                             <label for="garages" class="text-gray-400">Kapasitas Garasi</label>
                             <input id="garages" type="number" placeholder="ex: 2" v-model.number="form.numberOfGarages"
-                                class="border border-gray-400 p-2 rounded-xl w-[492px]" />
+                                class="border border-gray-400 p-2 rounded-xl w-full" />
                             <div v-if="errors.numberOfGarages" class="text-red-500 text-xs">{{ errors.numberOfGarages }}
                             </div>
                         </div>
                         <div class="field">
                             <label for="carports" class="text-gray-400">Kapasitas Carport</label>
                             <input id="carports" type="number" placeholder="ex: 1" v-model.number="form.numberOfCarports"
-                                class="border border-gray-400 p-2 rounded-xl w-[492px]" />
+                                class="border border-gray-400 p-2 rounded-xl w-full" />
                             <div v-if="errors.numberOfCarports" class="text-red-500 text-xs">{{ errors.numberOfCarports }}
                             </div>
                         </div>
                     </div>
                     <div class="mt-4">
                         <p class="text-gray-400">Fasilitas yang tersedia</p>
-                        <div class="grid grid-cols-3 gap-1">
-                            <label v-for="facility in facilities" :key="facility.value" class="text-[18px]">
-                                <input type="checkbox" :value="facility.value" v-model="form.selectedFacilities" />
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
+                            <label v-for="facility in facilities" :key="facility.value" class="text-lg flex items-center">
+                                <input type="checkbox" :value="facility.value" v-model="form.selectedFacilities"
+                                    class="mr-2" />
                                 {{ facility.label }}
                             </label>
                         </div>
@@ -136,52 +143,48 @@
                 </div>
 
                 <!-- Right Column: Estimation Card -->
-                <div class="w-[411px] ml-[150px]">
-                    <div class="bg-[#F3F3F3] px-4 py-6 rounded-md">
-                        <h1 class="text-[24px] text-center font-medium">Estimasi Harga</h1>
-                        <div class="bg-white rounded-md mt-3 p-2 min-h-[96px]">
-                            <h1 class="text-center font-bold text-[32px] text-[#24A29F] ">
-                                {{ priceEstimate ? formatRupiah(priceEstimate) : '' }}
+                <div class="w-full md:w-1/3">
+                    <div class="bg-[#F3F3F3] px-4 py-6 rounded-md shadow-md">
+                        <h1 class="text-xl text-center font-medium">Estimasi Harga</h1>
+                        <div class="bg-white rounded-md mt-3 p-2 min-h-[96px] shadow">
+                            <h1 class="text-center font-bold text-3xl text-[#24A29F]">
+                                {{ priceEstimate ? formatRupiah(priceEstimate) : '-' }}
                             </h1>
-                            <div class="flex justify-center">
+                            <div class="flex items-center justify-center mt-2">
                                 <p v-if="priceEstimate" class="text-center text-[16px]">
-                                Estimation Error <span class="text-red-500">19%</span>
-                           
-                            </p>
-                            <div class="relative group ml-2 mt-[2px]">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    class="w-5 h-5 text-gray-500 cursor-pointer group-hover:text-gray-700 transition"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M13 16h-1v-4h-1m1-4h.01M12 20c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z" />
-                                </svg>
-                                <div
-                                    class="absolute left-1/2 transform -translate-x-1/2 bottom-8 w-56 bg-gray-800 text-white text-sm p-2 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                                    The estimation error is based on market fluctuations and data analysis.
+                                    Estimation Error <span class="text-red-500">19%</span>
+                                </p>
+                                <div class="relative group ml-2 mt-[2px]">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="w-5 h-5 text-gray-500 cursor-pointer group-hover:text-gray-700 transition"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M13 16h-1v-4h-1m1-4h.01M12 20c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z" />
+                                    </svg>
+                                    <div
+                                        class="absolute left-1/2 transform -translate-x-1/2 bottom-8 w-56 bg-gray-800 text-white text-sm p-2 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                        The estimation error is based on market fluctuations and data analysis.
+                                    </div>
                                 </div>
                             </div>
-
-                            </div>
-                           
                         </div>
                         <p class="text-center font-medium mt-4">Range Estimasi</p>
-                        <div class="bg-[#FFFFFF] rounded-md p-2 mt-2 min-h-[40px]">
+                        <div class="bg-[#FFFFFF] rounded-md p-2 mt-2 min-h-[40px] shadow">
                             <p class="text-center font-bold text-[#24A29F] text-[18px]">
-                                {{ priceEstimate ? formatRupiah(priceEstimate - priceEstimate * 0.19) : '' }}
-                               <span class="text-black">{{ !priceEstimate ? ' ' : 's/d' }}</span>  {{ priceEstimate ? formatRupiah(priceEstimate +
-                                    priceEstimate
-                                    * 0.19) : ''
-                                }}
+                                {{ priceEstimate ? formatRupiah(priceEstimate - priceEstimate * 0.19) : '-' }}
+                                <span class="text-black">{{ priceEstimate ? 's/d' : '' }}</span>
+                                {{ priceEstimate ? formatRupiah(priceEstimate + priceEstimate * 0.19) : '-' }}
                             </p>
                         </div>
                     </div>
-                    <div class="flex flex-col">
-                        <button type="submit" class="btn btn-blue bg-[#24A29F] text-white rounded-md p-3 mt-10"
+                    <div class="flex flex-col mt-6">
+                        <button type="submit"
+                            class="bg-[#24A29F] text-white rounded-md p-3 mt-6 hover:bg-teal-600 transition"
                             :disabled="isLoading">
                             {{ isLoading ? "Estimating..." : "Estimate" }}
                         </button>
                         <button type="button" @click="handleOpen"
-                            class="btn btn-blue text-[#24A29F] border-[#24A29F] border-[2px] rounded-md p-3 mt-4">
+                            class="text-[#24A29F] border border-[#24A29F] rounded-md p-3 mt-4 hover:bg-[#24A29F] hover:text-white transition">
                             Simpan
                         </button>
                     </div>
