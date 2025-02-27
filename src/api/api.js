@@ -45,6 +45,16 @@ export const fetchHistories = async (currentPage) => {
   }
 };
 
+export const postHistory = async (data) => {
+  try {
+    const response = await api.post('/api/v1/history', data);
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const deleteHistory = async (id) => {
   try {
     const response = await api.delete(`/api/v1/history/${id}`);

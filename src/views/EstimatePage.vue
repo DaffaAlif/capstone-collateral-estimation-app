@@ -1,13 +1,13 @@
 <template>
     <div class="px-30 py-10">
         <form @submit.prevent="handleSubmit">
-            <h1 class="text-[48px] font-bold text-teal-500">Estimasi Properti</h1>
+            <h1 class="text-[48px] font-semibold text-teal-500">Estimasi Properti</h1>
             <div class="h-[2px] w-full bg-teal-500"></div>
             <div class="flex mt-10">
                 <!-- Left Column: Form Fields -->
                 <div class="w-3/5">
                     <!-- Lokasi Section -->
-                    <h1 class="text-[32px] font-bold">Lokasi</h1>
+                    <h1 class="text-[32px] font-medium">Lokasi</h1>
                     <div class="flex gap-4">
                         <div class="field">
                             <label for="city-select" class="mr-2 text-gray-400">Kota</label>
@@ -32,7 +32,7 @@
                     </div>
 
                     <!-- Detail Properti Section -->
-                    <h1 class="text-[32px] font-bold mt-6">Detail Properti</h1>
+                    <h1 class="text-[32px] font-medium mt-6">Detail Properti</h1>
                     <div class="flex gap-4">
                         <div class="field">
                             <label for="land-area" class="text-gray-400">Luas Tanah (m2)</label>
@@ -92,7 +92,7 @@
                     </div>
 
                     <!-- Fasilitas Section -->
-                    <h1 class="text-[32px] font-bold mt-6">Fasilitas</h1>
+                    <h1 class="text-[32px] font-medium mt-6">Fasilitas</h1>
                     <div class="flex gap-4">
                         <div class="field">
                             <label for="rooms" class="text-gray-400">Jumlah Kamar</label>
@@ -117,7 +117,7 @@
                             </div>
                         </div>
                         <div class="field">
-                            <label for="carports" class="text-gray-400">Jumlah Carport</label>
+                            <label for="carports" class="text-gray-400">Kapasitas Carport</label>
                             <input id="carports" type="number" placeholder="ex: 1" v-model.number="form.numberOfCarports"
                                 class="border border-gray-400 p-2 rounded-xl w-[492px]" />
                             <div v-if="errors.numberOfCarports" class="text-red-500 text-xs">{{ errors.numberOfCarports }}
@@ -139,18 +139,21 @@
                 <div class="w-[411px] ml-[150px]">
                     <div class="bg-[#F3F3F3] px-4 py-6 rounded-md">
                         <h1 class="text-[24px] text-center font-medium">Estimasi Harga</h1>
-                        <div class="bg-white rounded-md mt-3 p-2">
-                            <h1 class="text-center font-bold text-[32px] text-[#24A29F]">
-                                Rp. {{ priceEstimate }}
+                        <div class="bg-white rounded-md mt-3 p-2 min-h-[96px]">
+                            <h1 class="text-center font-bold text-[32px] text-[#24A29F] ">
+                                {{ priceEstimate ? formatRupiah(priceEstimate) : '' }}
                             </h1>
-                            <p class="text-center text-[12px]">
+                            <p v-if="priceEstimate" class="text-center text-[16px]">
                                 Estimation Error <span class="text-red-500">19%</span>
                             </p>
                         </div>
-                        <p class="text-center font-bold mt-4">Range Estimasi</p>
-                        <div class="bg-[#FFFFFF] rounded-md p-2 mt-2">
+                        <p class="text-center font-medium mt-4">Range Estimasi</p>
+                        <div class="bg-[#FFFFFF] rounded-md p-2 mt-2 min-h-[40px]">
                             <p class="text-center font-bold text-[#24A29F] text-[18px]">
-                                Rp. {{priceEstimate - priceEstimate *  0.19}} - Rp. {{ priceEstimate + priceEstimate *  0.19 }}
+                                {{ priceEstimate ? formatRupiah(priceEstimate - priceEstimate * 0.19) : '' }}
+                                {{ !priceEstimate ? ' ' : '-' }} {{ priceEstimate ? formatRupiah(priceEstimate + priceEstimate
+                                    * 0.19) : ''
+                                }}
                             </p>
                         </div>
                     </div>
@@ -168,16 +171,21 @@
             </div>
         </form>
         <!-- Modal Component -->
-        <SaveModal :isOpen="isOpen" :handleOpen="handleOpen" :is_completed="is_completed" />
+        <SaveModal :isOpen="isOpen" :handleOpen="handleOpen" :is_completed="is_completed"
+            :handleSubmitHistory="handleSubmitHistory" />
     </div>
 </template>
   
 <script setup>
-import { reactive, ref, computed } from 'vue';
+import { reactive, ref, computed, onBeforeUnmount, onMounted } from 'vue';
 import city_to_district from '../data/city_to_districts';
 import district_lat_long from '../data/district_lat_long';
 import SaveModal from '../components/SaveModal.vue';
 import { estimate } from '../api/api'
+import formatRupiah from '../script/formatrupiah';
+import { postHistory } from '../api/api';
+
+
 
 
 
@@ -234,8 +242,29 @@ const districts = computed(() => {
 
 const isLoading = ref(false);
 const priceEstimate = ref(0);
-const errorPercent = ref(0);
-const priceRange = reactive({ min: 0, max: 0 });
+
+const isFormHalfFilled = computed(() => {
+    return Object.values(form).some(value => {
+        if (Array.isArray(value)) return value.length > 0;
+        return value !== null && value !== '';
+    });
+});
+
+const handleBeforeUnload = (event) => {
+    if (isFormHalfFilled.value) {
+        event.preventDefault();
+        event.returnValue = '';
+    }
+};
+
+onMounted(() => {
+    window.addEventListener('beforeunload', handleBeforeUnload);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('beforeunload', handleBeforeUnload);
+});
+
 
 // Modal state
 const isOpen = ref(false);
@@ -244,9 +273,21 @@ const handleOpen = () => {
     isOpen.value = !isOpen.value;
 };
 
-// Validate form inputs
+function showSuccessPopup(message) {
+    alert(message);
+}
+
+function clearForm() {
+    document.querySelectorAll("input, select").forEach(field => {
+        if (field.type === "checkbox") {
+            field.checked = false;
+        } else {
+            field.value = "";
+        }
+    });
+}
+
 function validateForm() {
-    // Clear previous errors
     Object.keys(errors).forEach(key => delete errors[key]);
 
     if (!form.city) errors.city = 'Kota harus dipilih.';
@@ -259,11 +300,13 @@ function validateForm() {
     if (!form.propertyCondition) errors.propertyCondition = 'Kondisi properti harus dipilih.';
     if (!form.numberOfRooms || form.numberOfRooms <= 0) errors.numberOfRooms = 'Jumlah kamar harus lebih dari 0.';
     if (!form.numberOfBathrooms || form.numberOfBathrooms <= 0) errors.numberOfBathrooms = 'Jumlah kamar mandi harus lebih dari 0.';
-    if (!form.numberOfGarages || form.numberOfGarages <= 0) errors.numberOfGarages = 'Jumlah garasi harus lebih dari 0.';
-    if (!form.numberOfCarports || form.numberOfCarports <= 0) errors.numberOfCarports = 'Jumlah carport harus lebih dari 0.';
+    if (!form.numberOfGarages || form.numberOfGarages < 0) errors.numberOfGarages = 'Jumlah garasi harus lebih dari 0.';
+    if (!form.numberOfCarports || form.numberOfCarports < 0) errors.numberOfCarports = 'Jumlah carport harus lebih dari 0.';
 
     return Object.keys(errors).length === 0;
 }
+
+
 
 async function handleSubmit() {
     if (!validateForm()) {
@@ -300,10 +343,7 @@ async function handleSubmit() {
 
         console.log(response.data.data)
         priceEstimate.value = response.data.data;
-        // errorPercent.value = response.data.errorPercent;
-        // priceRange.min = response.data.priceRange.min;
-        // priceRange.max = response.data.priceRange.max;
-        // console.log(response.data);
+        is_completed.value = true;
     } catch (error) {
         console.error("API call failed:", error);
     } finally {
@@ -312,7 +352,9 @@ async function handleSubmit() {
 }
 
 function handleSubmitHistory() {
+
     const data = {
+        name: 'testing',
         city: form.city.toLowerCase(),
         latitude: district_lat_long[form.district]?.lat || 0,
         longitude: district_lat_long[form.district]?.long || 0,
@@ -324,19 +366,42 @@ function handleSubmitHistory() {
         property_condition: Number(form.propertyCondition),
         bedrooms: Number(form.numberOfRooms),
         bathrooms: Number(form.numberOfBathrooms),
-        swimming_pool: form.selectedFacilities.includes("Kolam Renang") ? 1 : 0,
+        swimming_pool: form.selectedFacilities.includes("Kolam Renang") ? true : false,
         garage: Number(form.numberOfGarages),
         carport: Number(form.numberOfCarports),
-        garden: form.selectedFacilities.includes("Taman") ? 1 : 0,
-        drying_area: form.selectedFacilities.includes("Tempat Jemuran") ? 1 : 0,
-        security: form.selectedFacilities.includes("Keamanan") ? 1 : 0,
-        parking_access: form.selectedFacilities.includes("Akses Parkir") ? 1 : 0
+        garden: form.selectedFacilities.includes("Taman") ? true : false,
+        drying_area: form.selectedFacilities.includes("Tempat Jemuran") ? true : false,
+        security: form.selectedFacilities.includes("Keamanan") ? true : false,
+        parking_access: form.selectedFacilities.includes("Akses Parkir") ? true : false,
+        price_in_rp: parseInt(priceEstimate.value),
+        is_completed: priceEstimate.value ? true : false
     };
 
-    if (!validateForm()) {
-        console.log('Validation failed:', errors);
-        return;
+    try {
+        isLoading.value = true;
+        postHistory(data)
+            .then(response => {
+                console.log(response.data.data)
+                priceEstimate.value = response.data.data;
+                is_completed.value = true;
+                isOpen.value = false;
+                priceEstimate.value = '';
+                setTimeout(() => {
+                    showSuccessPopup("Data has been successfully saved!");
+                    clearForm();
+                }, 1000);
+            })
+            .catch(error => {
+                console.error("API call failed:", error);
+            })
+            .finally(() => {
+                isLoading.value = false;
+            });
+    } catch (error) {
+        console.error("API call failed:", error);
     }
+
+
 }
 </script>
   
