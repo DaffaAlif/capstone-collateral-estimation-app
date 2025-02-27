@@ -43,7 +43,7 @@ const choosePage = (page) => {
 const handleEdit = (history) => {
   store.dispatch('setHistory', history)
   console.log(store.state.history);
-  router.push({ name: 'Estimate' })
+  router.push({ name: 'Estimate' , query: { edit: true } })
 }
 
 </script>
