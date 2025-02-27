@@ -3,13 +3,14 @@
         <header :class="headerClass">
             <div class="xl:mr-12">
                 <router-link to="/" :class="['header-logo']">
-                    <img src="../../assets/logo.png" alt="logo" width="40" height="20" class=" w-24 h-12" />
+                    <img src="../../assets/logo.png" alt="logo" width="40" height="20" class="w-24 h-12" />
                 </router-link>
             </div>
 
-            <div class="flex items-center justify-end pr-16 lg:pr-0 w-full">   <Accordion />
+            <div class="flex items-center justify-end pr-2 lg:pr-0 w-full">
+
                 <nav id="navbarCollapse" :class="[
-                    'navbar absolute right-0 z-30 w-[250px] rounded bg-white px-6 py-4 duration-300  lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 ',
+                    'navbar absolute right-0 z-30 w-screen lg:w-[250px] rounded bg-white  lg:py-0 duration-300 lg:visible lg:static lg:border-none lg:!bg-transparent px-8 lg:px-6  lg:p-0 lg:opacity-100',
                     navbarOpen ? 'visibility top-full opacity-100' : 'invisible top-[120%] opacity-0'
                 ]">
                     <ul class="block lg:flex lg:space-x-12 py-5">
@@ -20,9 +21,10 @@
                             ]">
                                 {{ menuItem.title }}
                             </router-link>
+                            
                             <div v-else>
                                 <p @click="handleSubmenu(index)"
-                                    class="flex cursor-pointer items-center justify-between py-2 text-base text-dark group-hover:text-black  dark:group-hover:text-white lg:mr-0 lg:inline-flex lg:px-0 lg:py-6">
+                                    class="flex cursor-pointer items-center justify-between py-2 text-base text-dark group-hover:text-black text-black lg:mr-0 lg:inline-flex lg:px-0 lg:py-6">
                                     {{ menuItem.title }}
                                     <span class="pl-3">
                                         <svg width="25" height="24" viewBox="0 0 25 24">
@@ -33,7 +35,7 @@
                                     </span>
                                 </p>
                                 <div :class="[
-                                    'submenu relative left-0 top-full rounded-sm bg-white transition-[top] duration-300 group-hover:opacity-100 dark:bg-dark lg:invisible lg:absolute lg:top-[110%] lg:block lg:w-[250px] lg:p-4 lg:opacity-0 lg:shadow-lg lg:group-hover:visible lg:group-hover:top-full',
+                                    'submenu relative left-0 top-full rounded-sm bg-white transition-[top] duration-300 group-hover:opacity-100 lg:invisible lg:absolute lg:top-[110%] lg:block lg:w-[250px] lg:p-4 lg:opacity-0 lg:shadow-lg lg:group-hover:visible lg:group-hover:top-full',
                                     openIndex === index ? 'block' : 'hidden'
                                 ]">
                                     <router-link v-for="(submenuItem, sIndex) in menuItem.submenu" :key="sIndex"
@@ -43,19 +45,29 @@
                                     </router-link>
                                 </div>
                             </div>
+
                         </li>
+                        <li  class="group relative block lg:hidden">
+                            <button @click="handleOpen" 
+                            class="block flex text-lg font-medium lg:mr-0 lg:inline-flex lg:px-0 py-1 lg:hidden">
+                            Sign Out
+                            </button>
+                        </li>
+
                     </ul>
                 </nav>
-                <div class="my-3 ml-6 w-[1px] h-7 bg-black">
-
-                </div>
-                <div class="mx-4">
+                <div class="my-3 ml-6 w-[1px] h-7 bg-black"></div>
+                <button @click="toggleNavbar" class="lg:hidden p-2 text-dark">
+                   <Bars3Icon class="h-7 font-light" />
+                </button>
+                <div class="mx-0 lg:mx-4">
                     <button @click="handleOpen" 
-                    class="hidden py-3 text-base font-medium text-dark hover:opacity-70 md:block">
+                    class="hidden py-3 text-base font-medium text-dark hover:opacity-70 lg:block">
                         <ArrowRightEndOnRectangleIcon class="h-7 font-light" />
                     </button>
                 </div>
                 
+            
             </div>
         </header>
     </div>
@@ -67,13 +79,14 @@ import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import store from "../../store";
 import router from "../../router";
+import { Bars3Icon } from "@heroicons/vue/24/solid";
 
 const handleLogOut = async () => {
     console.log('logout');
     await store.dispatch('logout');
-    router.push({ name: 'Login' })
-}
-// Define props using defineProps
+    router.push({ name: 'Login' });
+};
+
 const props = defineProps({
     sticky: {
         type: Boolean,
@@ -82,19 +95,15 @@ const props = defineProps({
     handleOpen: Function,
 });
 
-
 const navbarOpen = ref(false);
 const openIndex = ref(null);
 const menuData = ref([
     { path: "/dashboard", title: "Home" },
     { path: "/estimate", title: "Form" },
     { path: "/faq", title: "FAQ" },
-
 ]);
 
-// Use Vue Router to access the current route
 const route = useRoute();
-
 const currentPath = computed(() => route.path);
 
 const headerClass = computed(() => [
@@ -104,19 +113,24 @@ const headerClass = computed(() => [
     "items-center",
     "col-12",
     "shadow-lg",
-    "px-44",
+    "py-2",
+    "lg:py-0",
+    "px-6",
+    "lg:px-44",
     props.sticky
         ? " fixed z-[9999] bg-white !bg-opacity-80 shadow-sticky backdrop-blur-sm transition"
         : " fixed z-[9999] bg-white !bg-opacity-90 shadow-sticky backdrop-blur-sm transition",
 ]);
 
-// Methods
 function handleSubmenu(index) {
     openIndex.value = openIndex.value === index ? null : index;
+}
+
+function toggleNavbar() {
+    navbarOpen.value = !navbarOpen.value;
 }
 </script>
   
 <style scoped>
 /* Your scoped SCSS goes here */
 </style>
-  

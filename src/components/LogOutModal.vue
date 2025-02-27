@@ -6,7 +6,7 @@
 
 
           <!-- Form Title -->
-          <h2 class="text-xl font-semibold mb-1 text-center">Hapus </h2>
+          <h2 class="text-xl font-semibold mb-1 text-center">Logout </h2>
 
           <!-- Form Fields -->
           <form @submit.prevent="handleSubmit()">

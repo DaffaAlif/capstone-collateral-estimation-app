@@ -11,12 +11,12 @@
     <div class="absolute w-full h-full backdrop-brightness-50 -z-10">
      
     </div>
-    <div class="py-12 font-inter px-44 text-white ">
+    <div class="py-12 font-inter px-6 lg:px-44 text-white ">
       <h2 class="text-4xl font-semibold">
-    Dapatkan Estimasimu dengan <span class="font-bold">Mudah</span>
+        Estimasi <span class="font-bold">Pintar</span> dalam Hitungan Detik
   </h2>
   <p class="w-[500px] mt-1">
-    Masukkan detail properti dan temukan perkiraan nilai pasar sebagai agunan dengan cepat dan akurat.
+    Masukkan detail properti dan temukan perkiraan nilai properti sebagai agunan dengan cepat dan akurat.
   </p>
     <router-link to="/estimate" class="bg-teal-500 py-4 rounded-xl w-[300px] text-white font-semibold text-lg flex items-center justify-center gap-2 mt-10">
       <p>Mulai Estimasikan Properti</p>

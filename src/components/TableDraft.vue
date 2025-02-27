@@ -6,6 +6,7 @@ import { ArrowRightIcon } from '@heroicons/vue/24/outline'
 import { ChevronLeftIcon, ChevronRightIcon, PencilIcon } from '@heroicons/vue/24/solid'
 import { TrashIcon } from '@heroicons/vue/24/solid'
 import { fetchDrafts } from '../api/api'
+import router from '../router'
 
 const props = defineProps({
   handleOpen: Function,
@@ -39,14 +40,19 @@ const choosePage = (page) => {
   props.getDrafts()
 }
 
+const handleEdit = (history) => {
+  store.dispatch('setHistory', history)
+  console.log(store.state.history);
+  router.push({ name: 'Estimate' })
+}
 
 </script>
 
 <template>
 
 <div>
-  <div class="flex justify-between gap-4 w-full pt-6 font-inter">
-    <div class="flex flex-col justify-between w-80 gap-4 p-5 border rounded-sm border-neutral-400 min-h-64">
+  <div class="flex flex-col lg:flex-row justify-between gap-4 w-full pt-6 font-inter">
+    <div class="flex flex-col justify-between w-full lg:w-80 gap-4 p-5 border rounded-sm border-neutral-400 min-h-64 ">
       <div class="">
         <h3 class="text-4xl font-semibold text-teal-500 ">Draft</h3>
       <p class="text-lg">Lanjutkan proses estimasi dan simpan hasil estimasi untuk referensi di kemudian hari.</p>
@@ -79,11 +85,11 @@ const choosePage = (page) => {
         <div class="flex items-center gap-2">
           <p class="flex-1">{{ draft.name }}</p>
           <div class="flex gap-2 items-center py-2 w-16">
-            <button >
-              <PencilIcon class="w-6 h-6 text-neutral-400" />
+            <button @click="handleEdit(draft)">
+              <PencilIcon class="w-6 h-6 text-neutral-400 cursor-pointer" />
             </button>
             <button @click="handleOpen(draft)">
-              <img src="../assets/trash.svg" alt="trash" class=" w-6 h-[22px]" />
+              <img src="../assets/trash.svg" alt="trash" class=" w-6 h-[22px] cursor-pointer" />
             </button>
           </div>
         </div>

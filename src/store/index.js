@@ -5,7 +5,8 @@ import { fetchToken, postLogin } from '../api/api'
 export default createStore({
   state: {
     user: JSON.parse(localStorage.getItem('user')) || null,
-    token: localStorage.getItem('token') || null
+    token: localStorage.getItem('token') || null,
+    history: {},
   },
   getters: {
     isAuthenticated(state) {
@@ -14,6 +15,9 @@ export default createStore({
     },
     currentUser(state) {
       return state.user
+    },
+    getHistory(state) {
+      return state.history
     }
   },
   mutations: {
@@ -24,6 +28,9 @@ export default createStore({
     SET_TOKEN(state, token) {
       state.token = token
       localStorage.setItem('token', token)
+    },
+    SET_HISTORY(state, history) {
+      state.history = history
     },
 
     LOGOUT(state) {
@@ -48,6 +55,9 @@ export default createStore({
       }).catch(error => {
         throw error
       })
+    },
+    setHistory({ commit }, history) {
+      commit('SET_HISTORY', history)
     },
 
     logout({ commit }) {

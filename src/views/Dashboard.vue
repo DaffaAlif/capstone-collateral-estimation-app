@@ -61,14 +61,14 @@ onMounted(() => {
 <template>
     <div class="flex flex-col pb-8">
         <Banner />
-        <div class="mx-auto w-full mt-14">
-            <div class="px-52">
+        <div class="mx-auto w-full mt-8">
+            <div class="px-4 lg:px-52">
                 <TableDraft :handleOpen="handleOpen" :getDrafts="getDrafts" :drafts="drafts" :totalDrafts="totalDrafts"/>
             </div>
-            <div class=" px-44 my-16">
+            <div class=" px-2 lg:px-44 my-12">
                 <div class="w-full h-[1px] bg-neutral-400 mt-6"></div>
             </div>
-            <div class="px-52">
+            <div class="px-4 lg:px-52">
                 <TableHistory :handleOpen="handleOpen" :getHistories="getHistories" :histories="histories" :totalhistories="totalhistories" />
             </div>
         </div>

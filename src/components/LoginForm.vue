@@ -5,6 +5,11 @@ import { ref } from 'vue'
 import store from '../store'
 import router from '../router'
 
+import Snackbar from './SharedComponents/Snackbar.vue'
+
+import {ArrowPathIcon} from '@heroicons/vue/24/outline'
+
+const isLoading = ref(false)
 const email = ref('')
 const password = ref('')
 const hidden = ref(true)
@@ -27,6 +32,7 @@ const validateLogin = () => {
 
 const handleLogin = async () => {
   try {
+    isLoading.value = true
     validateLogin();
     await store.dispatch('login', { email: email.value, password: password.value })
     router.push({ name: 'Dashboard' })
@@ -34,6 +40,8 @@ const handleLogin = async () => {
     if (error.response.data.message == "User not found" || error.response.data.message == "Wrong password") {
       errors.value.login = 'Email atau password salah'
     }
+  } finally {
+    isLoading.value = false
   }
 }
 
@@ -46,13 +54,13 @@ const toggleHidden = () => {
 </script>
 
 <template>
- <div class="flex flex-col justify-center items-center w-[520px] font-inter">
-    <img src="../assets/logo.png" class="mx-auto w-40 object-contain mb-8">
+ <div class="flex flex-col justify-center items-center w-[520px] font-inter px-12 lg:px-0">
+    <img src="../assets/logo.png" class="mx-auto my-auto w-40 object-contain mb-8">
     <div class="mb-4">
       <h2 class="text-3xl font-bold">Selamat Datang Insan BSI</h2>
       <p class="text-lg">Masuk dan dapatkan perkiraan nilai properti sebagai agunan nasabah dengan cepat.</p>
     </div>
-    <p v-if="errors.login" class="text-red-500">{{ errors.login }}</p>
+    <!-- <p v-if="errors.login" class="text-red-500">{{ errors.login }}</p> -->
    <form class="flex flex-col gap-4 w-full mt-4" @submit.prevent="handleLogin">
     <div class="gap-2">
       <label class="text-zinc-700">Email</label>
@@ -82,15 +90,16 @@ const toggleHidden = () => {
       </div>
       <span class="text-red-500" v-if="errors.password">{{ errors.password }}</span>
     </div>
-   <button class="bg-teal-500 w-full py-4 rounded-xl text-white font-semibold text-lg flex items-center justify-center gap-2 mt-8" type="submit">
+   <button class="bg-teal-500 w-full py-4 rounded-xl text-white font-semibold text-lg flex items-center justify-center gap-2 mt-8 cursor-pointer" type="submit">
     <p>Login</p>
-    <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="">
-<path d="M1.5 7H14M14 7L8 1M14 7L8 13" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-
+      <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg" :class="isLoading ? 'hidden' : 'block'">
+        <path d="M1.5 7H14M14 7L8 1M14 7L8 13" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      <ArrowPathIcon class="w-6 h-6 animate-spin" v-if="isLoading" />
    </button>
     </form>
  </div>
+ <Snackbar v-if="errors.login" :message="errors.login" type="failure" :isOpen="true" />
 </template>
 
 <style scoped>
