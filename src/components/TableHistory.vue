@@ -13,7 +13,9 @@ const props = defineProps({
   handleOpen: Function,
   getHistories: Function,
   histories: Array,
-  totalhistories: Number
+  totalhistories: Number,
+  currentPageHistory: Number,
+  setCurrentPageHistory: Function
 })
 
 const handleEdit = (history) => {
@@ -23,25 +25,24 @@ const handleEdit = (history) => {
 }
 
 
-const currentPage = ref(1)
 
 
 const nextPage = () => {
-  if (currentPage.value < Math.ceil(totalhistories.value / 5)) {
-    currentPage.value++
+  if (props.currentPageHistory < Math.ceil(props.totalhistories / 5)) {
+    props.setCurrentPageHistory(props.currentPageHistory + 1)
     props.getHistories()
   }
 }
 
 const prevPage = () => {
-  if (currentPage.value > 1) {
-    currentPage.value--
+  if (props.currentPageHistory > 1) {
+    props.setCurrentPageHistory(props.currentPageHistory - 1)
     props.getHistories()
   }
 }
 
 const choosePage = (page) => {
-  currentPage.value = page
+  props.setCurrentPageHistory(page)
   props.getHistories()
 }
 
@@ -74,7 +75,7 @@ onMounted(() => {
       <th> Estimasi </th>
     </tr> 
     <tr class="h-10 border-b border-b-neutral-400" v-for="(history, index) in histories">
-      <td class="px-4">{{ ((currentPage - 1)  * 5 ) +index + 1 }}</td>
+      <td class="px-4">{{ ((props.currentPageHistory - 1)  * 5 ) +index + 1 }}</td>
       <td>{{ new Date(history.updated_at).toLocaleDateString() }}</td>
       <td>{{ history.name }}</td>
       <td>{{ history.city }}</td>
@@ -102,7 +103,7 @@ onMounted(() => {
     <button @click="prevPage">
       <ChevronLeftIcon class=" h-6 w-6 text-neutral-400" />
     </button>
-    <button @click="choosePage(i)" class="py-1 px-2.5 rounded" :class="currentPage === i ? 'bg-teal-500 text-white' : ''" v-for="i in Math.ceil(totalhistories / 5)">
+    <button @click="choosePage(i)" class="py-1 px-2.5 rounded" :class="props.currentPageHistory === i ? 'bg-teal-500 text-white' : ''" v-for="i in Math.ceil(totalhistories / 5)">
       <p>{{ i }}</p>
     </button>
     <button @click="nextPage">

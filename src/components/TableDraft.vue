@@ -12,31 +12,32 @@ const props = defineProps({
   handleOpen: Function,
   getDrafts: Function,
   drafts: Array,
-  totalDrafts: Number
+  totalDrafts: Number,
+  currentPageDraft: Number,
+  setCurrentPageDraft: Function
 })
 
 
-const currentPage = ref(1)
 
 
 
 
 const nextPage = () => {
-  if (currentPage.value < Math.ceil(totalDrafts.value / 5)) {
-    currentPage.value++
+  if (props.currentPageDraft < Math.ceil(props.totalDrafts / 5)) {
+    props.setCurrentPageDraft(props.currentPageDraft + 1)
     props.getDrafts()
   }
 }
 
 const prevPage = () => {
-  if (currentPage.value > 1) {
-    currentPage.value--
+  if (props.currentPageDraft > 1) {
+    props.setCurrentPageDraft(props.currentPageDraft - 1)
     props.getDrafts()
   }
 }
 
 const choosePage = (page) => {
-  currentPage.value = page
+  props.setCurrentPageDraft(page)
   props.getDrafts()
 }
 
@@ -79,7 +80,7 @@ const handleEdit = (history) => {
       <th >Nama</th>
     </tr> 
     <tr class="h-10 border-b border-b-neutral-400" v-for="(draft, index) in drafts">
-      <td class="px-4">{{ ((currentPage - 1)  * 5 ) +index + 1 }}</td>
+      <td class="px-4">{{ ((currentPageDraft - 1)  * 5 ) +index + 1 }}</td>
       <td>{{ new Date(draft.updated_at).toLocaleDateString() }}</td>
       <td>
         <div class="flex items-center gap-2">
@@ -105,7 +106,7 @@ const handleEdit = (history) => {
     <button @click="prevPage">
       <ChevronLeftIcon class=" h-6 w-6 text-neutral-400" />
     </button>
-    <button @click="choosePage(i)" class="py-1 px-2.5 rounded" :class="currentPage === i ? 'bg-teal-500 text-white' : ''" v-for="i in Math.ceil(totalDrafts / 5)">
+    <button @click="choosePage(i)" class="py-1 px-2.5 rounded" :class="currentPageDraft === i ? 'bg-teal-500 text-white' : ''" v-for="i in Math.ceil(totalDrafts / 5)">
       <p>{{ i }}</p>
     </button>
     <button @click="nextPage">
