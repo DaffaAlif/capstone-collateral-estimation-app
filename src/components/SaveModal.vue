@@ -16,7 +16,7 @@
             <form @submit.prevent="handleSubmitHistory">
                 <div class="mb-3">
                     <label class="block text-sm font-medium text-gray-700">Name</label>
-                    <input v-model="name" type="text" class="w-full p-2 border border-gray-300 rounded mt-1" required>
+                    <input v-model="estimationName" type="text" class="w-full p-2 border border-gray-300 rounded mt-1" required>
                 </div>
                 <div v-if="!is_completed" class="text-red-500 text-xs">
                     Anda belum mengisi semua data. Form akan disimpan dalam bentuk draft
@@ -25,7 +25,7 @@
                 <!-- Submit Button -->
                 <div class="flex justify-between gap-3">
 
-                    <button type="submit" class="bg-teal-500 text-white px-6 py-2 rounded-md w-full mt-3">
+                    <button @click="sendToParent" type="submit" class="bg-teal-500 text-white px-6 py-2 rounded-md w-full mt-3">
                         Submit
                     </button>
                     <button @click="handleOpen" class="bg-white text-teal-500 border border-teal-500 px-6 py-2 rounded-md w-full mt-3">
@@ -38,12 +38,25 @@
 </template>
   
 <script setup>
+import { ref } from 'vue';
 const props = defineProps({
     isOpen: Boolean,
     is_completed: Boolean,
     handleOpen: Function,
-    handleSubmitHistory : Function
+    handleSubmitHistory : Function,
+    estimationName: String
 })
+
+// Define local state
+const estimationName = ref('');
+
+// Define emit function
+const emit = defineEmits(['estimationName']);
+
+// Function to send data to parent
+const sendToParent = () => {
+  emit('estimationName', estimationName.value);
+};
 
 
 </script>
