@@ -7,6 +7,7 @@ import { ArrowRightIcon } from '@heroicons/vue/24/outline'
 import { ChevronLeftIcon, ChevronRightIcon, PencilIcon } from '@heroicons/vue/24/solid'
 import { TrashIcon } from '@heroicons/vue/24/solid'
 import { fetchHistories } from '../api/api'
+import router from '../router'
 
 const props = defineProps({
   handleOpen: Function,
