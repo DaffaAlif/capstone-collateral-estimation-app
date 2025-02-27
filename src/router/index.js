@@ -4,9 +4,12 @@ import Login from "../views/Login.vue";
 import Home from "../views/Home.vue";
 import Dashboard from "../views/Dashboard.vue";
 import store from "../store";
+import { useStore } from 'vuex';
 import EstimatePage from "../views/EstimatePage.vue";
 import Faq from "../views/Faq.vue";
 import NotFound from "../views/NotFound.vue";
+
+
 
 const routes = [
   {
@@ -14,6 +17,10 @@ const routes = [
     name: "Home",
     component: Login,
     meta: { requiresAuth: false },
+    beforeEnter: (to, from, next) => {
+      store.dispatch("clearHistory");
+      next(); // Continue navigation
+    }
   },
   {
     path: "/login",
@@ -32,12 +39,20 @@ const routes = [
     name: "Faq",
     component: Faq,
     meta: { requiresAuth: true },
+    beforeEnter: (to, from, next) => {
+      store.dispatch("clearHistory");
+      next(); // Continue navigation
+    }
   },
   {
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
     meta: { requiresAuth: true },
+    beforeEnter: (to, from, next) => {
+      store.dispatch("clearHistory");
+      next(); // Continue navigation
+    }
   },
   {
     path: "/:pathMatch(.*)*", // Catch-all route for 404
