@@ -1,7 +1,7 @@
 <template>
     <div class="px-4 md:px-8 lg:px-43 py-10">
         <form @submit.prevent="handleSubmit">
-            <h1 class="text-3xl md:text-4xl lg:text-5xl font-semibold text-teal-500 text-center">
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-semibold text-teal-500 ">
                 Estimasi Properti
             </h1>
             <div class="h-1 w-full bg-teal-500 my-4"></div>
@@ -148,13 +148,13 @@
                         <h1 class="text-xl text-center font-medium">Estimasi Harga</h1>
                         <div class="bg-white rounded-md mt-3 p-2 min-h-[96px] shadow">
                             <h1 class="text-center font-bold text-3xl text-[#24A29F]">
-                                {{ priceEstimate ? formatRupiah(priceEstimate) : '-' }}
+                                {{ priceEstimate ? formatRupiah(priceEstimate) : '' }}
                             </h1>
                             <div class="flex items-center justify-center mt-2">
                                 <p v-if="priceEstimate" class="text-center text-[16px]">
                                     Estimation Error <span class="text-red-500">19%</span>
                                 </p>
-                                <div class="relative group ml-2 mt-[2px]">
+                                <div v-if="priceEstimate" class="relative group ml-2 mt-[2px]">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="w-5 h-5 text-gray-500 cursor-pointer group-hover:text-gray-700 transition"
                                         fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -171,9 +171,9 @@
                         <p class="text-center font-medium mt-4">Range Estimasi</p>
                         <div class="bg-[#FFFFFF] rounded-md p-2 mt-2 min-h-[40px] shadow">
                             <p class="text-center font-bold text-[#24A29F] text-[18px]">
-                                {{ priceEstimate ? formatRupiah(priceEstimate - priceEstimate * 0.19) : '-' }}
+                                {{ priceEstimate ? formatRupiah(priceEstimate - priceEstimate * 0.19) : '' }}
                                 <span class="text-black">{{ priceEstimate ? 's/d' : '' }}</span>
-                                {{ priceEstimate ? formatRupiah(priceEstimate + priceEstimate * 0.19) : '-' }}
+                                {{ priceEstimate ? formatRupiah(priceEstimate + priceEstimate * 0.19) : '' }}
                             </p>
                         </div>
                     </div>
@@ -188,6 +188,7 @@
                             Simpan
                         </button>
                     </div>
+
                 </div>
             </div>
         </form>
@@ -195,6 +196,7 @@
         <SaveModal :isOpen="isOpen" :handleOpen="handleOpen" :is_completed="is_completed"
             :handleSubmitHistory="handleSubmitHistory" @estimationName="updateEstimationName" />
     </div>
+    <AlertPopup :show="isPopupVisible" message="Hasil estimasi berhasil tersimpan" :autoHide="true" :duration="4000" />
 </template>
 
 
@@ -210,6 +212,7 @@ import formatRupiah from '../script/formatrupiah';
 import { postHistory } from '../api/api';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
+import AlertPopup from '../components/SharedComponents/AlertPopup.vue';
 const router = useRouter();
 
 const route = useRoute();
@@ -239,6 +242,14 @@ const form = reactive({
     selectedFacilities: []
 });
 
+const defaultForm = reactive({ ...form });
+
+function clearForm() {
+  // Copies all defaultForm fields back into form
+  Object.assign(form, defaultForm);
+}
+
+
 const cities = Object.keys(city_to_district).map(
     (city) => city.charAt(0).toUpperCase() + city.slice(1)
 );
@@ -261,9 +272,6 @@ const updateEstimationName = (value) => {
     estimationName.name = value;
 };
 
-function showSuccessPopup(message) {
-    alert(message);
-}
 
 watchEffect(() => {
     if (history.value && Object.keys(history.value).length > 0) {
@@ -296,8 +304,11 @@ watchEffect(() => {
     }
 });
 
-console.log(edition.value)
+const isPopupVisible = ref(false);
 
+function showSuccessPopup() {
+    isPopupVisible.value = true;
+}
 
 const errors = reactive({});
 
@@ -349,16 +360,6 @@ onBeforeUnmount(() => {
 });
 
 
-
-function clearForm() {
-    document.querySelectorAll("input, select").forEach(field => {
-        if (field.type === "checkbox") {
-            field.checked = false;
-        } else {
-            field.value = "";
-        }
-    });
-}
 
 function validateForm() {
     Object.keys(errors).forEach(key => delete errors[key]);
@@ -458,9 +459,10 @@ function handleSubmitHistory() {
                     is_completed.value = true;
                     isOpen.value = false;
                     priceEstimate.value = '';
+                    clearForm();
                     setTimeout(() => {
-                        showSuccessPopup("Data has been successfully saved!");
-                        clearForm();
+                        showSuccessPopup()
+
                     }, 1000);
                 })
                 .catch(error => {
@@ -481,13 +483,15 @@ function handleSubmitHistory() {
                     is_completed.value = true;
                     isOpen.value = false;
                     priceEstimate.value = '';
+                    clearForm();
                     store.dispatch('clearHistory');
+                    showSuccessPopup()
                     setTimeout(() => {
-                        showSuccessPopup("Data has been successfully edited!");
-                        clearForm();
-                    }, 1000);
 
-                    router.push('/dashboard');
+                        router.push('/dashboard');
+                    }, 2000);
+
+
                 })
                 .catch(error => {
                     console.error("API call failed:", error);
