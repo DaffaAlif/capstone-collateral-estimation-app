@@ -56,7 +56,7 @@ const toggleHidden = () => {
 <template>
  <div class="flex flex-col justify-center items-center w-[520px] font-inter px-12 lg:px-0">
     <img src="../assets/logo.png" class="mx-auto my-auto w-40 object-contain mb-8">
-    <div class="mb-4">
+    <div class="mb-4 text-center">
       <h2 class="text-3xl font-bold">Selamat Datang Insan BSI</h2>
       <p class="text-lg">Masuk dan dapatkan perkiraan nilai properti sebagai agunan nasabah dengan cepat.</p>
     </div>
