@@ -44,13 +44,13 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <div class="field">
                             <label for="land-area" class="text-gray-400">Luas Tanah (m2)</label>
-                            <input id="land-area" type="number" placeholder="ex: 150" v-model.number="form.landArea"
+                            <input id="land-area" type="number" placeholder="e.g: 150" v-model.number="form.landArea"
                                 class="border border-gray-400 p-2 rounded-xl w-full" />
                             <div v-if="errors.landArea" class="text-red-500 text-xs">{{ errors.landArea }}</div>
                         </div>
                         <div class="field">
                             <label for="building-area" class="text-gray-400">Luas Bangunan (m2)</label>
-                            <input id="building-area" type="number" placeholder="ex: 110" v-model.number="form.buildingArea"
+                            <input id="building-area" type="number" placeholder="e.g: 110" v-model.number="form.buildingArea"
                                 class="border border-gray-400 p-2 rounded-xl w-full" />
                             <div v-if="errors.buildingArea" class="text-red-500 text-xs">{{ errors.buildingArea }}</div>
                         </div>
@@ -58,13 +58,13 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <div class="field">
                             <label for="floors" class="text-gray-400">Jumlah Lantai</label>
-                            <input id="floors" type="number" placeholder="ex: 2" v-model.number="form.floors"
+                            <input id="floors" type="number" placeholder="e.g: 2" v-model.number="form.floors"
                                 class="border border-gray-400 p-2 rounded-xl w-full" />
                             <div v-if="errors.floors" class="text-red-500 text-xs">{{ errors.floors }}</div>
                         </div>
                         <div class="field">
                             <label for="electrical-power" class="text-gray-400">Kekuatan Listrik (watt)</label>
-                            <input id="electrical-power" type="number" placeholder="ex: 1800"
+                            <input id="electrical-power" type="number" placeholder="e.g: 1800"
                                 v-model.number="form.electricalPower"
                                 class="border border-gray-400 p-2 rounded-xl w-full" />
                             <div v-if="errors.electricalPower" class="text-red-500 text-xs">{{ errors.electricalPower }}
@@ -104,13 +104,13 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <div class="field">
                             <label for="rooms" class="text-gray-400">Jumlah Kamar</label>
-                            <input id="rooms" type="number" placeholder="ex: 5" v-model.number="form.numberOfRooms"
+                            <input id="rooms" type="number" placeholder="e.g: 5" v-model.number="form.numberOfRooms"
                                 class="border border-gray-400 p-2 rounded-xl w-full" />
                             <div v-if="errors.numberOfRooms" class="text-red-500 text-xs">{{ errors.numberOfRooms }}</div>
                         </div>
                         <div class="field">
                             <label for="bathrooms" class="text-gray-400">Jumlah Kamar Mandi</label>
-                            <input id="bathrooms" type="number" placeholder="ex: 4" v-model.number="form.numberOfBathrooms"
+                            <input id="bathrooms" type="number" placeholder="e.g: 4" v-model.number="form.numberOfBathrooms"
                                 class="border border-gray-400 p-2 rounded-xl w-full" />
                             <div v-if="errors.numberOfBathrooms" class="text-red-500 text-xs">{{ errors.numberOfBathrooms }}
                             </div>
@@ -119,14 +119,14 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <div class="field">
                             <label for="garages" class="text-gray-400">Kapasitas Garasi</label>
-                            <input id="garages" type="number" placeholder="ex: 2" v-model.number="form.numberOfGarages"
+                            <input id="garages" type="number" placeholder="e.g: 2" v-model.number="form.numberOfGarages"
                                 class="border border-gray-400 p-2 rounded-xl w-full" />
                             <div v-if="errors.numberOfGarages" class="text-red-500 text-xs">{{ errors.numberOfGarages }}
                             </div>
                         </div>
                         <div class="field">
                             <label for="carports" class="text-gray-400">Kapasitas Carport</label>
-                            <input id="carports" type="number" placeholder="ex: 1" v-model.number="form.numberOfCarports"
+                            <input id="carports" type="number" placeholder="e.g: 1" v-model.number="form.numberOfCarports"
                                 class="border border-gray-400 p-2 rounded-xl w-full" />
                             <div v-if="errors.numberOfCarports" class="text-red-500 text-xs">{{ errors.numberOfCarports }}
                             </div>
